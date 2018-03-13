@@ -1,8 +1,7 @@
 Tethys
 ======
+Here comes the great Tethys Framework pretty soon.
 
-Here comes the great Tethys Framework as soon as possible.
-
-TODO
-====
-* Wiki-article: "instructions on how to install the two repo's and sync them" (link it in the .gitignore)
+How to install Tethys
+=====================
+http://gitfabian.github.io/Tethys/
