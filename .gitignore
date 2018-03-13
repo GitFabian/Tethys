@@ -3,11 +3,6 @@
 #
 /*.lnk
 
-# See Tethys Wiki for instructions on how to install the two repo's and sync them:
-# http://... (TODO)
-/__get_files.cmd
-/__get_files_exclude.txt
-
 #
 # IDE's Project-Folders
 #
