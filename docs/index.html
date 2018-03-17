@@ -1,52 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Tethys help</title>
-	<style>
-		h2{
-			text-decoration:underline;
-		}
-	</style>
-</head>
-<body style="white-space:pre-wrap;">
+<!DOCTYPE html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
+<div class="nav">Tethys documentation</div>
+<h2>Welcome to the Tethys framework</h2>
+* <a href="install.html">How to install</a>
 
-<h2>Bestehendes Projekt, Tethys als Submodul</h2>
-1.) Projekt versionieren
-	Kein bestehendes Repository?
-		Projektordner:
-			git init
-			git add .
-			git commit -m "Initial commit"
+* <a href="debugging.html">Debugging</a>
 
-2.) Tethys-Repository als Submodul anlegen
-	Projektordner:
-		git submodule add https://github.com/GitFabian/Tethys.git tethys
-
-	Debugging:
-		Q: (Windows 7) "fatal: unable to access 'https://github.com/GitFabian/Tethys.git/': error:1407742E:SSL routines:SSL23_GET_SERVER_HELLO:tlsv1 alert protocol version"
-			A: Download and install GCMW-1.14.0.exe from: https://github.com/Microsoft/Git-Credential-Manager-for-Windows/releases/tag/v1.14.0
-
-3.) Submodul-Eintrag committen
-	Projektordner:
-		git commit -m "Add Tethys as a submodule"
-
-<h2>Bestehendes Projekt mit Submodul klonen</h2>
-https://git-scm.com/book/en/v2/Git-Tools-Submodules
-1.) Projekt klonen
-	Projektordner:
-		git clone REPO_URL .
-
-2.) Submodule klonen
-	Projektordner:
-		git submodule init
-		git submodule update
-
--ODER:-
-
-1.) In einem Abwasch:
-	Projektordner:
-		git clone --recurse-submodules REPO_URL .
-
-</body>
-</html>
+</body></html>
