@@ -1,0 +1,28 @@
+<!DOCTYPE html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
+<div class="nav">Tethys documentation<ul><li><a href="index.html">Index</a></li></ul></div>
+<h1>Apache configuration</h1>
+
+<h2>Module activation</h2>
+<code>LoadModule alias_module modules/mod_alias.so</code>
+<code>LoadModule rewrite_module modules/mod_rewrite.so</code>
+
+<h2>Alias</h2>
+<p class="code">Alias ROOT_HTTP_CORE "ROOT_HDD_CORE"<br>
+&lt;Directory "ROOT_HDD_CORE"><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;Allow from all<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride All<br>
+&lt;/Directory></p>
+
+<h2>Rewrite</h2>
+<code>RewriteEngine on</code>
+
+<h3>Rewrite for individual extension</h3>
+<code>RewriteRule ^ROOT_HTTP_CORE/(.*)\.EXTENSION$ "ROOT_HDD_CORE/$1.php"</code>
+
+<!-- ><h3>Rewrite for mapped downloads</h3>
+<code>#RewriteRule ^ROOT_HTTP_DATA/(.*)$ "ROOT_HDD_CORE/core/data.php?url=$1"</code>
+	NOTE! Core function not implmented yet!
+<code>#RewriteRule ^ROOT_HTTP_CORE/export/(.*)\.csv$ "ROOT_HDD_CORE/core/export_csv.php?db=$1"</code>
+	NOTE! Core directory and core function not implemented yet!
+</!-->
+</body></html>

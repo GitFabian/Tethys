@@ -1,39 +1,39 @@
 <!DOCTYPE html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
 <div class="nav">Tethys documentation<ul><li><a href="index.html">Index</a></li></ul></div>
-<h2>Bestehendes Projekt, Tethys als Submodul</h2>
-1.) Projekt versionieren
-	Kein bestehendes Repository?
-		Projektordner:
+<h2>Existing project, Tethys as a submodule</h2>
+1.) Versioning the project
+	No existing repository?
+		Run from project's root folder:
 			<code>git init</code>
 			<code>git add .</code>
 			<code>git commit -m "Initial commit"</code>
 
-2.) Tethys-Repository als Submodul anlegen
-	Projektordner:
+2.) Create Tethys repository as a submodule
+	Run from project's root folder:
 		<code>git submodule add https://github.com/GitFabian/Tethys.git tethys</code>
 
 	[ <a href="debugging.html#Installation">DEBUGGING</a> ]
 
-3.) Submodul-Eintrag committen
-	Projektordner:
+3.) Commit submodule entry
+	Run from project's root folder:
 		<code>git commit -m "Add Tethys as a submodule"</code>
 
-<h2>Bestehendes Projekt mit Submodul klonen</h2>
-Quelle: <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">https://git-scm.com/book/en/v2/Git-Tools-Submodules</a>
+<h2>Cloning an existing project with Tethys submodule</h2>
+Source: <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">https://git-scm.com/book/en/v2/Git-Tools-Submodules</a>
 
-1.) Projekt klonen
-	Projektordner:
+1.) Cloning the project
+	Run from project's root folder:
 		<code>git clone REPO_URL .</code>
 
-2.) Submodule klonen
-	Projektordner:
+2.) Cloning the submodule
+	Run from project's root folder:
 		<code>git submodule init</code>
 		<code>git submodule update</code>
 
--ODER:-
+-OR:-
 
-1.) In einem Abwasch:
-	Projektordner:
+1.) In one step:
+	Run from project's root folder:
 		<code>git clone --recurse-submodules REPO_URL .</code>
 
 </body></html>

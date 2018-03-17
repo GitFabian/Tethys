@@ -35,12 +35,20 @@ h3{
 	font-size:18px;
 	color: #640000;
 }
+p.code,
 code{
 	color:darkgreen;
 	font-weight:bold;
+	background: #e9e9e9;
+	padding:0 .5em;
 }
 p{
+	display:inline-block;
 	white-space:normal;
+	margin:0;
+}
+p.code{
+	padding:.5em 1em;
 }
 div.nav{
 	background:gray;
