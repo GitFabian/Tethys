@@ -1,4 +1,4 @@
-<!DOCTYPE html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
 <div class="nav">Tethys documentation<ul><li><a href="index.html">Index</a></li></ul></div>
 <h1>Apache configuration</h1>
 
@@ -12,11 +12,13 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;Allow from all<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride All<br>
 &lt;/Directory></p>
+<b class="note">Note that <a href="globals.html#ROOT_HTTP_CORE">ROOT_HTTP_CORE</a> starts with a "/"!</b>
+<b class="note">(Windows) Note that path-seperators have to be "/" in <a href="globals.html#ROOT_HDD_CORE">ROOT_HDD_CORE</a>!</b>
 
 <h2>Rewrite</h2>
 <code>RewriteEngine on</code>
 
-<h3>Rewrite for individual extension</h3>
+<h3 id="rewrite_ext">Rewrite for individual extension</h3>
 <code>RewriteRule ^ROOT_HTTP_CORE/(.*)\.EXTENSION$ "ROOT_HDD_CORE/$1.php"</code>
 
 <!-- ><h3>Rewrite for mapped downloads</h3>
