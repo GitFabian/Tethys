@@ -34,6 +34,9 @@ function str_replace_byArray($substitutions, $string){
  * array("id"=>"link1","href"=>"http://tethys-framework.de")
  * =>
  * <a href='http://tethys-framework.de' id='link1'>
+
+ * @param $params string[]
+ * @return string
  */
 function html_tag_keyValues($params){
 	$html="";

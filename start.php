@@ -1,9 +1,9 @@
 <?php
 
-//Root-Verzeichnis ist das, in dem die start.php liegt:
+//Root directory is where the start.php is:
 define("ROOT_HDD_CORE",__DIR__);
 
-//Globale Includes:
+//Global includes:
 require_once ROOT_HDD_CORE."/page.php";
 require_once ROOT_HDD_CORE."/tools/basic.php";
 require_once ROOT_HDD_CORE."/config/settings.php";
@@ -22,7 +22,7 @@ class start{
 		define("USER_ADMIN",true);//TODO
 
 		if(!file_exists(ROOT_HDD_CORE."/config/dbconfig.php")){
-			//Config-Datei ist nicht vorhanden -> Installer aufrufen
+			//Call installer if config file is not existing
 			include_once ROOT_HDD_CORE.'/config/install.php';
 			install::create_config_file();
 		}

@@ -16,7 +16,6 @@ class Form {
 	public function __construct($action="", $submit_text="Absenden", $cmd=null, $method=null) {
 
 		$this->action=$action;
-		$this->submit_text=$submit_text;
 
 		//The submission method is "post" by default, for developers "get".
 		$this->method=$method?:(USER_DEV?"get":"post");
@@ -80,16 +79,16 @@ class Formfield{
 		$label=$this->title;
 		$tooltip=$this->tooltip;
 
-		//Tooltip? Label ergänzen
+		//Tooltip? Change label
 		if($tooltip)$label.=" (!)";
 
-		//Entwickler bekommen den Feldnamen angezeigt:
+		//Developers see the fieldname
 		if(USER_DEV)$tooltip.=" [".$this->name."]";
 
-		$title=$tooltip?" title='".string_escape_html_value($tooltip)."'":"";
+		$title=$tooltip?"title='".string_escape_html_value($tooltip)."'":"";
 
 		return "<div".$this->getParams_outer().">"
-				."<label for='$this->name'$title>$label</label>"
+				."<label for='$this->name' $title>$label</label>"
 				.$this->inner_html()
 			."</div>";
 	}
@@ -155,8 +154,8 @@ class Formfield_select extends Formfield {
 	public function inner_html() {
 		$options=array();
 		foreach ($this->values as $key=>$value){
-			$selected=($key==$this->value?" selected":"");
-			$options[]="\t<option value='$key'$selected>$value</option>";
+			$selected=($key==$this->value?"selected":"");
+			$options[]="\t<option value='$key' $selected>$value</option>";
 		}
 		return "<select".$this->getParams_inner(false).">\n".implode("\n",$options)."\n</select>";
 	}

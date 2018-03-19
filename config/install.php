@@ -9,7 +9,7 @@ class install{
 		if(request_cmd("save"))self::save_config($page);
 
 		/*
-		 * Eingabe-Formular für die dbconfig.php
+		 * Input form for dbconfig.php
 		 */
 		$form=new Form("","Speichern","save");
 		$form->add_field(new Formfield_select("db_type","Engine",array("mysql"=>"MySQL","b"=>"c")));
