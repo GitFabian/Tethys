@@ -17,21 +17,16 @@ class start{
 	}
 
 	public static function init($pageId, $page_title){
-		$page = self::standalone_init($pageId, $page_title);
-		return $page;
-	}
 
-	public static function standalone_init($pageId, $page_title){
+		define("USER_DEV",true);//TODO
+		define("USER_ADMIN",true);//TODO
 
-		if(file_exists(ROOT_HDD_CORE."/config/dbconfig.php")){
-
-		}else{
-
+		if(!file_exists(ROOT_HDD_CORE."/config/dbconfig.php")){
 			//Config-Datei ist nicht vorhanden -> Installer aufrufen
 			include_once ROOT_HDD_CORE.'/config/install.php';
 			install::create_config_file();
-
 		}
+
 
 		self::$global_page = new page($pageId, $page_title);
 
