@@ -85,7 +85,7 @@ class Formfield{
 		//Developers see the fieldname
 		if(USER_DEV)$tooltip.=" [".$this->name."]";
 
-		$title=$tooltip?"title='".string_escape_html_value($tooltip)."'":"";
+		$title=$tooltip?"title='".escape_value_html($tooltip)."'":"";
 
 		return "<div".$this->getParams_outer().">"
 				."<label $title>$label</label>"

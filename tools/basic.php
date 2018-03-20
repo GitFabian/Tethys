@@ -14,16 +14,32 @@ function request_cmd($cmd){
 }
 
 /**
- * Example: "<tag value = '".string_escape_html_value($value)."' />"
+ * Examples:
+ *      "<tag value = '".escape_value_html($value)."' />"
+ *      "<tag value = \"".escape_value_html($value)."\" />"
+ *      '<tag value = "'.escape_value_html($value).'" />'
  *
  * @param $value string
  * @return string
  */
-function string_escape_html_value($value){
+function escape_value_html($value){
 	return str_replace_byArray(array(
+		"&" => "&amp;",
 		"\"" => "&quot;",
 		"'" => "&apos;",
 	),$value);
+}
+
+/**
+ * @param $string string
+ * @return string
+ */
+function escape_value_bs($string){
+	return str_replace_byArray(array(
+		"\\"=>"\\\\",
+		"'"=>"\\'",
+		"\""=>"\\\"",
+	),$string);
 }
 
 function str_replace_byArray($substitutions, $string){
@@ -41,8 +57,30 @@ function str_replace_byArray($substitutions, $string){
 function html_tag_keyValues($params){
 	$html="";
 	foreach ($params as $key=>$value){
-		$html.=" $key='".string_escape_html_value($value)."'";
+		$html.=" $key='".escape_value_html($value)."'";
 	}
 	return $html;
 
+}
+
+function html_a_button($link, $label){
+	return "<a href='".escape_value_html($link)."' class='abutton'>$label</a>";
+}
+
+function template_load($file, $replacements){
+	if (!file_exists($file)){
+		page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
+	}
+
+	//Template-Datei einlesen:
+	$content = file_get_contents($file);
+
+	if($content===false){
+		page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
+	}
+
+	//Ersetzungen:
+	$content=str_replace_byArray($replacements,$content);
+
+	return $content;
 }
