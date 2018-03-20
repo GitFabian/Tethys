@@ -88,7 +88,7 @@ class Formfield{
 		$title=$tooltip?"title='".string_escape_html_value($tooltip)."'":"";
 
 		return "<div".$this->getParams_outer().">"
-				."<label for='$this->name' $title>$label</label>"
+				."<label $title>$label</label>"
 				.$this->inner_html()
 			."</div>";
 	}
