@@ -2,6 +2,7 @@
 # Tethys' folder structure and project organization
 #
 /*.lnk
+/config_link.php
 
 #
 # IDE's Project-Folders
