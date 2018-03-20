@@ -1,7 +1,7 @@
 <?php
 /**
  * Load Tethys configuration files and tables.
-include_once ROOT_HDD_CORE."/core/config.php";
+include_once ROOT_HDD_CORE."/core/Config.php";
  */
 
 class Config{
@@ -11,13 +11,13 @@ class Config{
 	}
 
 	private static function create_config_link($message){
-		include_once ROOT_HDD_CORE.'/inst/install.php';
-		install::create_config_link($message);
+		include_once ROOT_HDD_CORE . '/inst/Install.php';
+		Install::create_config_link($message);
 	}
 
 	private static function create_config_file(){
-		include_once ROOT_HDD_CORE.'/inst/install.php';
-		install::create_config_file();
+		include_once ROOT_HDD_CORE . '/inst/Install.php';
+		Install::create_config_file();
 	}
 
 	private static function load_hdd_config($pageId){

@@ -1,11 +1,11 @@
 <?php
 
-class install{
+class Install{
 
 	public static function create_config_link($message){
 		self::initialize_install();
 		include_once(ROOT_HDD_CORE.'/classes/Form.php');
-		$page = page::get_global_page()->reset("installer_config_link", "Installation of Tethys");
+		$page = Page::get_global_page()->reset("installer_config_link", "Installation of Tethys");
 
 		if(request_cmd("cmd_save_cfglink"))self::save_config_link($page, request_value("cfglink"));
 
@@ -22,9 +22,9 @@ class install{
 		$page->send_and_quit();
 	}
 
-	public static function initialize_install(){
+	private static function initialize_install(){
 
-		if(page::get_global_page()->get_id()!="core_index"){
+		if(Page::get_global_page()->get_id()!="core_index"){
 			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";exit;
 		}
 
@@ -39,7 +39,7 @@ class install{
 	public static function create_config_file(){
 		self::initialize_install();
 		include_once(ROOT_HDD_CORE.'/classes/Form.php');
-		$page = page::get_global_page()->reset("installer_config", "Installation of Tethys");
+		$page = Page::get_global_page()->reset("installer_config", "Installation of Tethys");
 
 		if(request_cmd("cmd_save_installer"))self::save_config($page);
 
@@ -58,7 +58,7 @@ class install{
 		$page->send_and_quit();
 	}
 
-	public static function save_config_link(page $page, $link){
+	private static function save_config_link(Page $page, $link){
 
 		//Load template
 		$template = template_load(ROOT_HDD_CORE."/inst/tpl_cfglink.php",array(
@@ -81,9 +81,9 @@ class install{
 		$page->send_and_quit();
 	}
 
-	public static function save_config(page $page){
+	private static function save_config(Page $page){
 
-		if(file_exists(TCFGFILE)){ page::get_global_page()->exit_with_error("Config-Datei kann nicht überschrieben werden!"); }
+		if(file_exists(TCFGFILE)){ Page::get_global_page()->exit_with_error("Config-Datei kann nicht überschrieben werden!"); }
 
 		//Load template
 		$template = template_load(ROOT_HDD_CORE."/inst/tpl_config.php",array(

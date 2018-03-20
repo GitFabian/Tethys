@@ -1,6 +1,6 @@
 <?php
 
-class page{
+class Page{
 
 	private $id;
 	private $title;
@@ -8,7 +8,7 @@ class page{
 	private $inner_body="";
 	private $messages = array();
 
-	/** @var page */
+	/** @var Page */
 	static private $global_page = null;
 
 	private function __construct($id, $title) {

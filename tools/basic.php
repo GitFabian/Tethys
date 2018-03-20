@@ -69,14 +69,14 @@ function html_a_button($link, $label){
 
 function template_load($file, $replacements){
 	if (!file_exists($file)){
-		page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
+		Page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
 	}
 
 	//Template-Datei einlesen:
 	$content = file_get_contents($file);
 
 	if($content===false){
-		page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
+		Page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
 	}
 
 	//Ersetzungen:

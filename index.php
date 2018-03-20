@@ -1,6 +1,6 @@
 <?php
-require_once 'start.php';
-$page = start::init("core_index",settings::get_core_value("INDEX_TITLE"));
+require_once 'Start.php';
+$page = Start::init("core_index",Settings::get_core_value("INDEX_TITLE"));
 
 $page->addHtml("Hello World");
 
