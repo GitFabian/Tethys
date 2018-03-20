@@ -6,8 +6,8 @@ include_once ROOT_HDD_CORE."/core/config.php";
 
 class Config{
 
-	public static function load_config(){
-		self::load_hdd_config();
+	public static function load_config($pageId){
+		self::load_hdd_config($pageId);
 	}
 
 	private static function create_config_link($message){
@@ -20,7 +20,7 @@ class Config{
 		install::create_config_file();
 	}
 
-	private static function load_hdd_config(){
+	private static function load_hdd_config($pageId){
 
 		if(!file_exists(ROOT_HDD_CORE.'/config_link.php')){
 			self::create_config_link("No config link installed!"); }

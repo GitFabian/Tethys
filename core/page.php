@@ -15,6 +15,10 @@ class page{
 		$this->reset($id, $title);
 	}
 
+	public function get_id(){
+		return $this->id;
+	}
+
 	public static function get_global_page(){
 		return self::$global_page;
 	}

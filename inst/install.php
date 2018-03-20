@@ -3,7 +3,7 @@
 class install{
 
 	public static function create_config_link($message){
-		self::initialize_standalone();
+		self::initialize_install();
 		include_once(ROOT_HDD_CORE.'/classes/Form.php');
 		$page = page::get_global_page()->reset("installer_config_link", "Installation of Tethys");
 
@@ -22,14 +22,24 @@ class install{
 		$page->send_and_quit();
 	}
 
-	public static function initialize_standalone(){
-		if(!defined("SKIN_HTTP"))define("SKIN_HTTP","demo/skins/synergy");//<= Works only from the root directory, which we should be in when installing
+	public static function initialize_install(){
+
+		if(page::get_global_page()->get_id()!="core_index"){
+			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";exit;
+		}
+
+		//Works only from the root directory:
+		if(!defined("SKIN_HTTP"))define("SKIN_HTTP","demo/skins/synergy");
+
+		//Set to true, if you're developing the installation routine
+		if(!defined("USER_DEV"))define("USER_DEV",false);
+
 	}
 
 	public static function create_config_file(){
-		self::initialize_standalone();
+		self::initialize_install();
 		include_once(ROOT_HDD_CORE.'/classes/Form.php');
-		$page = page::get_global_page()->reset("installer_config_link", "Installation of Tethys");
+		$page = page::get_global_page()->reset("installer_config", "Installation of Tethys");
 
 		if(request_cmd("cmd_save_installer"))self::save_config($page);
 
@@ -97,8 +107,6 @@ class install{
 
 		$page->addMessageConfirm("Konfigurationsdatei erfolgreich gespeichert.");
 		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'],"Weiter"));
-
-		self::initialize_standalone();
 		$page->send_and_quit();
 	}
 
