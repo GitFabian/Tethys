@@ -61,10 +61,10 @@ class Formfield {
 	public $outer_class = null;
 	public $outer_more_params = array();
 
-	function __construct($name, $title = null, $value = null) {
+	function __construct($name, $title = null, $value = null, $val_from_request=true) {
 		$this->name = $name;
 		$this->title = ($title === null ? $name : $title);
-		$this->value = request_value($name, $value);
+		$this->value = $val_from_request?request_value($name, $value):$value;
 	}
 
 	protected function inner_html() {
@@ -119,7 +119,7 @@ class Formfield {
 class Formfield_hidden extends Formfield {
 
 	public function __construct($name, $value) {
-		parent::__construct($name, null, $value);
+		parent::__construct($name, null, $value, false);
 	}
 
 	public function toHtml() {
