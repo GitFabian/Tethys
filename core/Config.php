@@ -34,6 +34,8 @@ class Config {
 		if (!file_exists(TCFGFILE))
 			self::create_config_file();
 
+		include_once TCFGFILE;
+
 	}
 
 }
