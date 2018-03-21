@@ -4,13 +4,13 @@
  * Basic toolbox
  */
 
-function request_value($key, $default=null){
+function request_value($key, $default = null) {
 	if (isset($_REQUEST[$key])) return $_REQUEST[$key];
 	return $default;
 }
 
-function request_cmd($cmd){
-	return (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"]==$cmd);
+function request_cmd($cmd) {
+	return (isset($_REQUEST["cmd"]) && $_REQUEST["cmd"] == $cmd);
 }
 
 /**
@@ -22,28 +22,28 @@ function request_cmd($cmd){
  * @param $value string
  * @return string
  */
-function escape_value_html($value){
+function escape_value_html($value) {
 	return str_replace_byArray(array(
 		"&" => "&amp;",
 		"\"" => "&quot;",
 		"'" => "&apos;",
-	),$value);
+	), $value);
 }
 
 /**
  * @param $string string
  * @return string
  */
-function escape_value_bs($string){
+function escape_value_bs($string) {
 	return str_replace_byArray(array(
-		"\\"=>"\\\\",
-		"'"=>"\\'",
-		"\""=>"\\\"",
-	),$string);
+		"\\" => "\\\\",
+		"'" => "\\'",
+		"\"" => "\\\"",
+	), $string);
 }
 
-function str_replace_byArray($substitutions, $string){
-	return str_replace(array_keys($substitutions),array_values($substitutions),$string);
+function str_replace_byArray($substitutions, $string) {
+	return str_replace(array_keys($substitutions), array_values($substitutions), $string);
 }
 
 /**
@@ -54,33 +54,33 @@ function str_replace_byArray($substitutions, $string){
  * @param $params string[]
  * @return string
  */
-function html_tag_keyValues($params){
-	$html="";
-	foreach ($params as $key=>$value){
-		$html.=" $key='".escape_value_html($value)."'";
+function html_tag_keyValues($params) {
+	$html = "";
+	foreach ($params as $key => $value) {
+		$html .= " $key='" . escape_value_html($value) . "'";
 	}
 	return $html;
 
 }
 
-function html_a_button($link, $label){
-	return "<a href='".escape_value_html($link)."' class='abutton'>$label</a>";
+function html_a_button($link, $label) {
+	return "<a href='" . escape_value_html($link) . "' class='abutton'>$label</a>";
 }
 
-function template_load($file, $replacements){
-	if (!file_exists($file)){
+function template_load($file, $replacements) {
+	if (!file_exists($file)) {
 		Page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
 	}
 
 	//Template-Datei einlesen:
 	$content = file_get_contents($file);
 
-	if($content===false){
+	if ($content === false) {
 		Page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
 	}
 
 	//Ersetzungen:
-	$content=str_replace_byArray($replacements,$content);
+	$content = str_replace_byArray($replacements, $content);
 
 	return $content;
 }

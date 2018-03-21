@@ -1,6 +1,6 @@
 <?php
 
-define('TETHYSDB',':db_name');
+define('TETHYSDB', ':db_name');
 
 //TODO
 

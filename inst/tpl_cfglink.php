@@ -1,3 +1,3 @@
 <?php
 
-define('TCFGFILE',':cfglink');
+define('TCFGFILE', ':cfglink');

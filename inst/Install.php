@@ -1,20 +1,20 @@
 <?php
 
-class Install{
+class Install {
 
-	public static function create_config_link($message){
+	public static function create_config_link($message) {
 		self::initialize_install();
-		include_once(ROOT_HDD_CORE.'/classes/Form.php');
+		include_once(ROOT_HDD_CORE . '/classes/Form.php');
 		$page = Page::get_global_page()->reset("installer_config_link", "Installation of Tethys");
 
-		if(request_cmd("cmd_save_cfglink"))self::save_config_link($page, request_value("cfglink"));
+		if (request_cmd("cmd_save_cfglink")) self::save_config_link($page, request_value("cfglink"));
 
 		$page->addMessageError($message);
 
-		$cfgfile_proposal=dirname(ROOT_HDD_CORE).'/tethys_cfg.php';
+		$cfgfile_proposal = dirname(ROOT_HDD_CORE) . '/tethys_cfg.php';
 
-		$form=new Form("","Speichern","cmd_save_cfglink");
-		$form->add_field(new Formfield_text("cfglink","Konfigurationsdatei",$cfgfile_proposal));
+		$form = new Form("", "Speichern", "cmd_save_cfglink");
+		$form->add_field(new Formfield_text("cfglink", "Konfigurationsdatei", $cfgfile_proposal));
 
 		$page->addDiv("Bitte geben Sie den Pfad zur Konfigurationsdatei an:");
 		$page->addHtml($form);
@@ -22,91 +22,94 @@ class Install{
 		$page->send_and_quit();
 	}
 
-	private static function initialize_install(){
+	private static function initialize_install() {
 
-		if(Page::get_global_page()->get_id()!="core_index"){
-			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";exit;
+		if (Page::get_global_page()->get_id() != "core_index") {
+			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";
+			exit;
 		}
 
 		//Works only from the root directory:
-		if(!defined("SKIN_HTTP"))define("SKIN_HTTP","demo/skins/synergy");
+		if (!defined("SKIN_HTTP")) define("SKIN_HTTP", "demo/skins/synergy");
 
 		//Set to true, if you're developing the installation routine
-		if(!defined("USER_DEV"))define("USER_DEV",false);
+		if (!defined("USER_DEV")) define("USER_DEV", false);
 
 	}
 
-	public static function create_config_file(){
+	public static function create_config_file() {
 		self::initialize_install();
-		include_once(ROOT_HDD_CORE.'/classes/Form.php');
+		include_once(ROOT_HDD_CORE . '/classes/Form.php');
 		$page = Page::get_global_page()->reset("installer_config", "Installation of Tethys");
 
-		if(request_cmd("cmd_save_installer"))self::save_config($page);
+		if (request_cmd("cmd_save_installer")) self::save_config($page);
 
 		/*
 		 * Input form for config file
 		 */
-		$form=new Form("","Speichern","cmd_save_installer");
-		$form->add_field(new Formfield_select("db_type","Engine",array("mysql"=>"MySQL")));
-		$form->add_field(new Formfield_text("server_addr","Server","localhost"));
-		$form->add_field(new Formfield_text("db_name","Name","tethys"));
-		$form->add_field($ff=new Formfield_text("username","Benutzer"));
-			$ff->tooltip="Der Benutzer muss über Rechte fürs Anlegen von Datenbanken und Tabellen verfügen";
-		$form->add_field(new Formfield_password("dbpass","Passwort"));
+		$form = new Form("", "Speichern", "cmd_save_installer");
+		$form->add_field(new Formfield_select("db_type", "Engine", array("mysql" => "MySQL")));
+		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
+		$form->add_field(new Formfield_text("db_name", "Name", "tethys"));
+		$form->add_field($ff = new Formfield_text("username", "Benutzer"));
+		$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Datenbanken und Tabellen verfügen";
+		$form->add_field(new Formfield_password("dbpass", "Passwort"));
 		$page->addHtml($form);
 
 		$page->send_and_quit();
 	}
 
-	private static function save_config_link(Page $page, $link){
+	private static function save_config_link(Page $page, $link) {
 
 		//Load template
-		$template = template_load(ROOT_HDD_CORE."/inst/tpl_cfglink.php",array(
-			":cfglink"=>escape_value_bs($link),
+		$template = template_load(ROOT_HDD_CORE . "/inst/tpl_cfglink.php", array(
+			":cfglink" => escape_value_bs($link),
 		));
 
 		//Write config-link file
-		$file = fopen(ROOT_HDD_CORE."/config_link.php","w");
-		$success=false;
-		if($file!==false){
-			$success = fwrite($file,$template);
+		$file = fopen(ROOT_HDD_CORE . "/config_link.php", "w");
+		$success = false;
+		if ($file !== false) {
+			$success = fwrite($file, $template);
 			fclose($file);
 		}
-		if($success===false){
+		if ($success === false) {
 			$page->exit_with_error("Speichern der config-link-Datei fehlgeschlagen!");
 		}
 
 		$page->addMessageConfirm("Datei config_link.php erfolgreich gespeichert.");
-		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'],"Weiter"));
+		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'], "Weiter"));
 		$page->send_and_quit();
 	}
 
-	private static function save_config(Page $page){
+	private static function save_config(Page $page) {
 
-		if(file_exists(TCFGFILE)){ Page::get_global_page()->exit_with_error("Config-Datei kann nicht überschrieben werden!"); }
+		if (file_exists(TCFGFILE)) {
+			Page::get_global_page()->exit_with_error("Config-Datei kann nicht überschrieben werden!");
+		}
 
 		//Load template
-		$template = template_load(ROOT_HDD_CORE."/inst/tpl_config.php",array(
-			":db_type"=>escape_value_bs(request_value("db_type")),
-			":server_addr"=>escape_value_bs(request_value("server_addr")),
-			":db_name"=>escape_value_bs(request_value("db_name")),
-			":username"=>escape_value_bs(request_value("username")),
-			":dbpass"=>escape_value_bs(request_value("dbpass")),
+		$template = template_load(ROOT_HDD_CORE . "/inst/tpl_config.php", array(
+			":db_type" => escape_value_bs(request_value("db_type")),
+			":server_addr" => escape_value_bs(request_value("server_addr")),
+			":db_name" => escape_value_bs(request_value("db_name")),
+			":username" => escape_value_bs(request_value("username")),
+			":dbpass" => escape_value_bs(request_value("dbpass")),
 		));
 
 		//TODO:Funktion fürs Speichern von Dateien mit Fehlerabfrage
-		$file = fopen(TCFGFILE,"w");
-		$success=false;
-		if($file!==false){
-			$success = fwrite($file,$template);
+		$file = fopen(TCFGFILE, "w");
+		$success = false;
+		if ($file !== false) {
+			$success = fwrite($file, $template);
 			fclose($file);
 		}
-		if($success===false){
+		if ($success === false) {
 			$page->exit_with_error("Speichern der config-Datei fehlgeschlagen!");
 		}
 
 		$page->addMessageConfirm("Konfigurationsdatei erfolgreich gespeichert.");
-		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'],"Weiter"));
+		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'], "Weiter"));
 		$page->send_and_quit();
 	}
 
