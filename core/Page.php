@@ -80,9 +80,11 @@ class Page {
 		 */
 		$messages = "";
 		if ($this->messages) {
+			//@formatter:off
 			$messages = "<div class='messages'>\n\t"
-				. implode("\n\t", $this->messages) . "\n"
+					. implode("\n\t", $this->messages) . "\n"
 				. "</div>";
+			//@formatter:on
 		}
 
 		/*
@@ -94,6 +96,7 @@ class Page {
 			$css_html .= "<link href=\"$url\" rel=\"stylesheet\" type=\"text/css\" media=\"$media\"/>\n";
 		}
 
+		//@formatter:off
 		echo "<!DOCTYPE html>"
 			."<html>\n"
 				."<head>\n"
@@ -106,6 +109,8 @@ class Page {
 					."<div class='body_inner'>$this->inner_body</div>"
 				."</div></body>"
 			."</html>";
+		//@formatter:on
+
 		exit;
 	}
 

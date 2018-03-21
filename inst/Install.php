@@ -47,14 +47,16 @@ class Install {
 		/*
 		 * Input form for config file
 		 */
+		//@formatter:off
 		$form = new Form("", "Speichern", "cmd_save_installer");
 		$form->add_field(new Formfield_select("db_type", "Engine", array("mysql" => "MySQL")));
 		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
 		$form->add_field(new Formfield_text("db_name", "Name", "tethys"));
 		$form->add_field($ff = new Formfield_text("username", "Benutzer"));
-		$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Datenbanken und Tabellen verfügen";
+			$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Datenbanken und Tabellen verfügen";
 		$form->add_field(new Formfield_password("dbpass", "Passwort"));
 		$page->addHtml($form);
+		//@formatter:on
 
 		$page->send_and_quit();
 	}
