@@ -87,10 +87,12 @@ class Formfield {
 
 		$title = $tooltip ? "title='" . escape_value_html($tooltip) . "'" : "";
 
+		//@formatter:off
 		return "<div" . $this->getParams_outer() . ">"
-			. "<label $title>$label</label>"
-			. $this->inner_html()
+				. "<label $title>$label</label>"
+				. $this->inner_html()
 			. "</div>";
+		//@formatter:on
 	}
 
 	protected function getParams_inner($value = true) {
