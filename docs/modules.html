@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
+<div class="nav">Tethys documentation<ul><li><a href="index.html">Index</a></li></ul></div>
+<h1>Modules</h1>
+
+<h3>Naming</h3>
+A module has two names: A cleartext <code>title</code> and a short <code>stringId</code>.
+The namespace for the <b>stringId</b> is very restricted. The name occures in:
+* PHP variable names
+* DB table names
+* Windows/Unix folder names
+Additionnaly it will be pre- and suffixed (by underscore) in several contexts.
+The remaining available characters are:
+<p class="code">[A-Za-z0-9]</p>
+<b class="note">The lowercase stringId of the module has to be unique in each project</b>
+To ensure uniqueness the module-IDs have to be renamed possibly on import.
+
+</body></html>
