@@ -37,6 +37,12 @@ class Database {
 				$page->addHtml($dbinitform);
 				$page->send_and_quit();
 			}
+			if(self::$main==null&&$this->error_code==1045/*Access denied*/){
+				include_once ROOT_HDD_CORE . '/inst/Install.php';
+				$page=Install::initialize_install("installer_dbinit");
+				$page->exit_with_error("Zugriff auf die Datenbank fehlgeschlagen! Bitte Benutzername und Passwort überprüfen: "
+					."<code>".TCFGFILE."</code>");
+			}
 
 			echo ("Datenbank-Fehler! ".$this->error_msg);exit;
 		}

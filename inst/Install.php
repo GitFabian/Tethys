@@ -116,10 +116,7 @@ class Install {
 		}
 
 		$page->addMessageConfirm("Konfigurationsdatei erfolgreich gespeichert.");
-
-		$page->addHtml(self::dbinit());
-
-		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Überspringen"));
+		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
 		$page->send_and_quit();
 	}
 
@@ -137,7 +134,7 @@ class Install {
 			}
 
 			$page=Page::get_global_page();
-			$page->addMessageConfirm("Datenbank initialisiert!");
+			$page->addMessageConfirm("Datenbank erstellt!");
 			$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
 			$page->send_and_quit();
 		}
@@ -148,7 +145,7 @@ class Install {
 		$form->add_field(new Formfield_text("server_addr","Server","localhost"));
 		$form->add_field(new Formfield_text("username","Username","root"));
 		$form->add_field(new Formfield_password("dbpass","Password"));
-		return "<h2>Datenbank initialisieren</h2>".$form;
+		return "<h2>Datenbank anlegen</h2>".$form;
 	}
 
 }
