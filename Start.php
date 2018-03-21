@@ -5,6 +5,7 @@ define("ROOT_HDD_CORE", __DIR__);
 
 //Global includes:
 require_once ROOT_HDD_CORE . "/core/Config.php";
+require_once ROOT_HDD_CORE . "/core/Database.php";
 require_once ROOT_HDD_CORE . "/core/Page.php";
 require_once ROOT_HDD_CORE . "/core/Settings.php";
 require_once ROOT_HDD_CORE . "/tools/basic.php";

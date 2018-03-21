@@ -1,11 +1,14 @@
 <?php
 
+/*
+ * include_once ROOT_HDD_CORE . '/inst/Install.php';
+ */
+
 class Install {
 
 	public static function create_config_link($message) {
-		self::initialize_install();
+		$page=self::initialize_install("installer_config_link");
 		include_once(ROOT_HDD_CORE . '/classes/Form.php');
-		$page = Page::get_global_page()->reset("installer_config_link", "Installation of Tethys");
 
 		if (request_cmd("cmd_save_cfglink")) self::save_config_link($page, request_value("cfglink"));
 
@@ -22,12 +25,14 @@ class Install {
 		$page->send_and_quit();
 	}
 
-	private static function initialize_install() {
+	public static function initialize_install($page_id) {
 
 		if (Page::get_global_page()->get_id() != "core_index") {
 			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";
 			exit;
 		}
+
+		$page=Page::get_global_page()->reset($page_id, "Installation of Tethys");
 
 		//Works only from the root directory:
 		if (!defined("SKIN_HTTP")) define("SKIN_HTTP", "demo/skins/synergy");
@@ -35,12 +40,12 @@ class Install {
 		//Set to true, if you're developing the installation routine
 		if (!defined("USER_DEV")) define("USER_DEV", false);
 
+		return $page;
 	}
 
 	public static function create_config_file() {
-		self::initialize_install();
+		$page=self::initialize_install("installer_config");
 		include_once(ROOT_HDD_CORE . '/classes/Form.php');
-		$page = Page::get_global_page()->reset("installer_config", "Installation of Tethys");
 
 		if (request_cmd("cmd_save_installer")) self::save_config($page);
 
@@ -52,8 +57,8 @@ class Install {
 		$form->add_field(new Formfield_select("db_type", "Engine", array("mysql" => "MySQL")));
 		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
 		$form->add_field(new Formfield_text("db_name", "Name", "tethys"));
-		$form->add_field($ff = new Formfield_text("username", "Benutzer"));
-			$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Datenbanken und Tabellen verfügen";
+		$form->add_field($ff = new Formfield_text("username", "Benutzer", "root"));
+			#$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Tabellen verfügen";
 		$form->add_field(new Formfield_password("dbpass", "Passwort"));
 		$page->addHtml($form);
 		//@formatter:on
@@ -80,7 +85,7 @@ class Install {
 		}
 
 		$page->addMessageConfirm("Datei config_link.php erfolgreich gespeichert.");
-		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'], "Weiter"));
+		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
 		$page->send_and_quit();
 	}
 
@@ -111,8 +116,39 @@ class Install {
 		}
 
 		$page->addMessageConfirm("Konfigurationsdatei erfolgreich gespeichert.");
-		$page->addHtml(html_a_button($_SERVER['HTTP_REFERER'], "Weiter"));
+
+		$page->addHtml(self::dbinit());
+
+		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Überspringen"));
 		$page->send_and_quit();
+	}
+
+	public static function dbinit(){
+
+		//Datenbank-Initialisierung:
+		if(request_cmd("dodbinit")){
+			try {
+				$dbh = new PDO("mysql:host=".request_value("server_addr"), request_value("username"), request_value("dbpass"));
+
+				$dbh->exec("CREATE DATABASE `".TETHYSDB."`;") or die(print_r($dbh->errorInfo(), true));
+
+			} catch (PDOException $e) {
+				die("DB ERROR: ". $e->getMessage());
+			}
+
+			$page=Page::get_global_page();
+			$page->addMessageConfirm("Datenbank initialisiert!");
+			$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
+			$page->send_and_quit();
+		}
+
+		//Eingabe von Benutzername und Passwort:
+		include_once(ROOT_HDD_CORE.'/classes/Form.php');
+		$form=new Form("","Absenden","dodbinit");
+		$form->add_field(new Formfield_text("server_addr","Server","localhost"));
+		$form->add_field(new Formfield_text("username","Username","root"));
+		$form->add_field(new Formfield_password("dbpass","Password"));
+		return "<h2>Datenbank initialisieren</h2>".$form;
 	}
 
 }
