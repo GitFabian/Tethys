@@ -2,10 +2,4 @@
 
 define('TETHYSDB', ':db_name');
 
-//TODO
-
-//:db_type
-//:server_addr
-//:db_name
-//:username
-//:dbpass
+Database::set_main_connection(new Database(":server_addr",TETHYSDB,":username",":dbpass"));
