@@ -1,11 +1,33 @@
 <?php
-
-/*
+/**
+ * Installation of Tethys
+ * ======================
+ * After cloning the repository please run index.php from your browser. You will be guided through the installation.
+ *
+ * Technical details
+ * =================
+ * Step 1: Create file with link to the config.
+ *         index.php calls Start::init calls Config::load_config calls Config::load_hdd_config.
+ *         Before loading the config this routine recognizes missing of the file config_link.php and calls
+ *         @see Install::create_config_link.
+ * Step 2: Create config file.
+ *         Function @see Config::load_hdd_config detects missing config file and calls
+ *         @see Install::create_config_file.
+ * Step 3: Creation of the database.
+ *         Configuration file (template: tpl_config.php) calls new Database calls new PDO with name of not-yet-existing
+ *         Tethys database thus throws error handled in @see Database::fehler_beim_pdo_erstellen, which in case of a
+ *         1049 ("Unknown database") calls @see Install::dbinit.
+ * Next step ist the initialization of the Database that is done by the @see Config.
+ *
  * include_once ROOT_HDD_CORE . '/inst/Install.php';
  */
-
 class Install {
 
+	/**
+	 * First call (no cmd set): Shows a form prompting for the path to the configuration file.
+	 * Second call (cmd value set): @see Install::save_config_link
+	 * @param $message string
+	 */
 	public static function create_config_link($message) {
 		$page=self::initialize_install("installer_config_link");
 		include_once(ROOT_HDD_CORE . '/classes/Form.php');
@@ -25,47 +47,12 @@ class Install {
 		$page->send_and_quit();
 	}
 
-	public static function initialize_install($page_id) {
-
-		if (Page::get_global_page()->get_id() != "core_index") {
-			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";
-			exit;
-		}
-
-		$page=Page::get_global_page()->reset($page_id, "Installation of Tethys");
-
-		//Works only from the root directory:
-		if (!defined("SKIN_HTTP")) define("SKIN_HTTP", "demo/skins/synergy");
-
-		//Set to true, if you're developing the installation routine
-		if (!defined("USER_DEV")) define("USER_DEV", false);
-
-		return $page;
-	}
-
-	public static function create_config_file() {
-		$page=self::initialize_install("installer_config");
-		include_once(ROOT_HDD_CORE . '/classes/Form.php');
-
-		if (request_cmd("cmd_save_installer")) self::save_config($page);
-
-		/*
-		 * Input form for config file
-		 */
-		//@formatter:off
-		$form = new Form("", "Speichern", "cmd_save_installer");
-		$form->add_field(new Formfield_select("db_type", "Engine", array("mysql" => "MySQL")));
-		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
-		$form->add_field(new Formfield_text("db_name", "Name", "tethys"));
-		$form->add_field($ff = new Formfield_text("username", "Benutzer", "root"));
-			#$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Tabellen verfügen";
-		$form->add_field(new Formfield_password("dbpass", "Passwort"));
-		$page->addHtml($form);
-		//@formatter:on
-
-		$page->send_and_quit();
-	}
-
+	/**
+	 * Saves file config_link.php (generated from the template tpl_cfglink.php) containing the path
+	 * to the configuration file.
+	 * @param Page   $page
+	 * @param string $link
+	 */
 	private static function save_config_link(Page $page, $link) {
 
 		//Load template
@@ -74,6 +61,7 @@ class Install {
 		));
 
 		//Write config-link file
+		//TODO (s.u.)
 		$file = fopen(ROOT_HDD_CORE . "/config_link.php", "w");
 		$success = false;
 		if ($file !== false) {
@@ -89,6 +77,62 @@ class Install {
 		$page->send_and_quit();
 	}
 
+	/**
+	 * Is used to set the skin and page title for installation routine, which is called before the setting of these
+	 * config values.
+	 * @param $page_id
+	 * @return Page
+	 */
+	public static function initialize_install($page_id) {
+
+		//Installation needs to be called from the index-page:
+		if (Page::get_global_page()->get_id() != "core_index") {
+			echo "Projekt nicht initialisiert. Bitte rufen Sie die Index-Seite auf.";
+			exit;
+		}
+
+		//Set page title:
+		$page=Page::get_global_page()->reset($page_id, "Installation of Tethys");
+
+		//Set skin.
+		//Works only from the root directory:
+		if (!defined("SKIN_HTTP")) define("SKIN_HTTP", "demo/skins/synergy");
+
+		//Set to true, if you're developing the installation routine
+		if (!defined("USER_DEV")) define("USER_DEV", false);
+
+		return $page;
+	}
+
+	/**
+	 * First call (no cmd set): Shows a form prompting for all relevant data for the config file.
+	 * Second call (cmd value set): @see Install::save_config
+	 */
+	public static function create_config_file() {
+		$page=self::initialize_install("installer_config");
+		include_once(ROOT_HDD_CORE . '/classes/Form.php');
+
+		if (request_cmd("cmd_save_installer")) self::save_config($page);
+
+		/*
+		 * Input form for config file
+		 */
+		$form = new Form("", "Speichern", "cmd_save_installer");
+		$form->add_field(new Formfield_select("db_type", "Engine", array("mysql" => "MySQL")));
+		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
+		$form->add_field(new Formfield_text("db_name", "Name", "tethys"));
+		$form->add_field($ff = new Formfield_text("username", "Benutzer", "root"));
+			#$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Tabellen verfügen";
+		$form->add_field(new Formfield_password("dbpass", "Passwort"));
+		$page->addHtml($form);
+
+		$page->send_and_quit();
+	}
+
+	/**
+	 * Saves config file (generated from the template SEE tpl_config.php).
+	 * @param Page $page
+	 */
 	private static function save_config(Page $page) {
 
 		if (file_exists(TCFGFILE)) {
@@ -120,6 +164,13 @@ class Install {
 		$page->send_and_quit();
 	}
 
+	/**
+	 * Creates Tethys database
+	 * First call (no cmd set): Returns a form prompting for username and password.
+	 * Second call (cmd value set): Creates database.
+	 *
+	 * @return string
+	 */
 	public static function dbinit(){
 
 		//Datenbank-Initialisierung:
