@@ -83,13 +83,14 @@ function template_load($file, $replacements) {
 	$content = str_replace_byArray($replacements, $content);
 
 	//TPLDOC entfernen:
-	/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/regex.html */
+	/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/php/regex.html */
 	$content = preg_replace("/\\/\\*\\*TPLDOCSTART.*?TPLDOCEND\\*\\/\\R?/s", "", $content);
 
 	return $content;
 }
 
 function file_save($file, $content, $append=false){
+	/** Explanation of the file params: http://gitfabian.github.io/Tethys/php/files.html */
 	$file = fopen($file, $append?"a":"w");
 	$success = false;
 	if ($file !== false) {
