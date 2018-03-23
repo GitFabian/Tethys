@@ -82,5 +82,9 @@ function template_load($file, $replacements) {
 	//Ersetzungen:
 	$content = str_replace_byArray($replacements, $content);
 
+	//TPLDOC entfernen:
+	/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/regex.html */
+	$content = preg_replace("/\\/\\*\\*TPLDOCSTART.*?TPLDOCEND\\*\\/\\R?/s", "", $content);
+
 	return $content;
 }
