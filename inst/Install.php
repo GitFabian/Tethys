@@ -61,16 +61,7 @@ class Install {
 		));
 
 		//Write config-link file
-		//TODO (s.u.)
-		$file = fopen(ROOT_HDD_CORE . "/config_link.php", "w");
-		$success = false;
-		if ($file !== false) {
-			$success = fwrite($file, $template);
-			fclose($file);
-		}
-		if ($success === false) {
-			$page->exit_with_error("Speichern der config-link-Datei fehlgeschlagen!");
-		}
+		file_save(ROOT_HDD_CORE . "/config_link.php", $template);
 
 		$page->addMessageConfirm("Datei config_link.php erfolgreich gespeichert.");
 		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
@@ -148,16 +139,7 @@ class Install {
 			":dbpass" => escape_value_bs(request_value("dbpass")),
 		));
 
-		//TODO:Funktion fürs Speichern von Dateien mit Fehlerabfrage
-		$file = fopen(TCFGFILE, "w");
-		$success = false;
-		if ($file !== false) {
-			$success = fwrite($file, $template);
-			fclose($file);
-		}
-		if ($success === false) {
-			$page->exit_with_error("Speichern der config-Datei fehlgeschlagen!");
-		}
+		file_save(TCFGFILE, $template);
 
 		$page->addMessageConfirm("Konfigurationsdatei erfolgreich gespeichert.");
 		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));

@@ -88,3 +88,15 @@ function template_load($file, $replacements) {
 
 	return $content;
 }
+
+function file_save($file, $content, $append=false){
+	$file = fopen($file, $append?"a":"w");
+	$success = false;
+	if ($file !== false) {
+		$success = fwrite($file, $content);
+		fclose($file);
+	}
+	if ($success === false) {
+		Page::get_global_page()->exit_with_error("Speichern der Datei \"$file\" fehlgeschlagen!");
+	}
+}
