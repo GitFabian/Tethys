@@ -1,5 +1,10 @@
 <?php
 /**TPLDOCSTART
+ * This file is part of the Tethys framework;
+ * Copyright (C) 2014-2018 Fabian Perder (tethys@qnote.de) and contributors
+ * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
+ * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
+ *
  * This template is used to create "config_link.php", which is created by the installer and contains a link to the
  * configuration file.
  TPLDOCEND*/
