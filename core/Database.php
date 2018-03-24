@@ -5,10 +5,19 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-
+/**
+ * Contains static methods for database operations.
+ * A static Database object ($main) is created to handle the requests.
+ * A PDO object ($pdo) is used to execute database queries.
+ */
 class Database {
 
+	//Return types:
+	/** Returns id value of the inserted set of data.
+	 * Used by the function @see insert. */
 	public static $RETURN_LASTINSERTID =1 ;
+	/** Returns result of the SELECT query in form of an associative array.
+	 *  */
 	public static $RETURN_FETCHALLCOLUMN =2 ;
 
 	/** @var Database */
@@ -29,31 +38,47 @@ class Database {
 		}
 	}
 
+	/**
+	 * Sets the error values in case of a failed PDO instantiation.
+	 * If no main database is set, it is assumed that we are in installation process and the installer is called.
+	 * @param Exception $e
+	 * @param bool $exit_on_error
+	 */
 	private function fehler_beim_pdo_erstellen(Exception $e, $exit_on_error){
 		require_once ROOT_HDD_CORE . "/core/Errors.php";
 		$this->set_error(Errors::format_exception($e), $e->getCode());
 		if($exit_on_error){
 
 			//Handelt es sich um die Initialisierung der main-database?
-			if(self::$main==null&&$this->error_code==1049/*Unknown database*/){
-				include_once ROOT_HDD_CORE . '/inst/Install.php';
-				$page=Install::initialize_install("installer_dbinit");
-				$dbinitform=Install::dbinit();
-				$page->addMessageInfo("Datenbank nicht vorhanden!");
-				$page->addHtml($dbinitform);
-				$page->send_and_quit();
-			}
-			if(self::$main==null&&$this->error_code==1045/*Access denied*/){
-				include_once ROOT_HDD_CORE . '/inst/Install.php';
-				$page=Install::initialize_install("installer_dbinit");
-				$page->exit_with_error("Zugriff auf die Datenbank fehlgeschlagen! Bitte Benutzername und Passwort überprüfen: "
-					."<code>".TCFGFILE."</code>");
+			if(self::$main==null){
+				if($this->error_code==1049/*Unknown database*/){
+					include_once ROOT_HDD_CORE . '/inst/Install.php';
+					$page=Install::initialize_install("installer_dbinit");
+					$dbinitform=Install::dbinit();
+					$page->addMessageInfo("Datenbank nicht vorhanden!");
+					$page->addHtml($dbinitform);
+					$page->send_and_quit();
+				}
+				if($this->error_code==1045/*Access denied*/){
+					include_once ROOT_HDD_CORE . '/inst/Install.php';
+					$page=Install::initialize_install("installer_dbinit");
+					$page->exit_with_error("Zugriff auf die Datenbank fehlgeschlagen! Bitte Benutzername und Passwort überprüfen: "
+						."<code>".TCFGFILE."</code>");
+				}
 			}
 
 			echo ("Datenbank-Fehler! ".$this->error_msg);exit;
 		}
 	}
 
+	/**
+	 * The two values error_msg and error_code are coupled together. This function shoud be used to set them.
+	 * $error=true .... If no error message or error code is available the value is set to TRUE.
+	 * $error=false ... In case of no error both values shoud be FALSE.
+	 * @param string $msg
+	 * @param string|int $code
+	 * @param bool $error
+	 */
 	private function set_error($msg, $code, $error=true){
 		$this->error_msg=$msg?:$error;
 		$this->error_code=$code?:$error;
@@ -62,11 +87,23 @@ class Database {
 		$this->set_error(false, false, false);
 	}
 
+	/**
+	 * Should be called only once by the configuration file.
+	 * Sets the main database connection.
+	 * @param Database $database
+	 */
 	public static function set_main_connection(Database $database){
 		self::$main=$database;
 	}
 
-	public function iquery($comment, $query, $return){
+	/**
+	 * Handles different types of queries, specified by $return
+	 * @param string $comment
+	 * @param string $query
+	 * @param int $return_type Database::$RETURN_...
+	 * @return array|false|null|string
+	 */
+	private function iquery($comment, $query, $return_type){
 		$this->reset_error();
 		/** @var PDOStatement */
 		$statement = $this->pdo->query($query);
@@ -75,7 +112,7 @@ class Database {
 			$this->set_error($errorInfo[2], $errorInfo[0]);
 			return false;
 		}
-		switch ($return){
+		switch ($return_type){
 			case self::$RETURN_LASTINSERTID:
 					return $this->pdo->lastInsertId();
 				break;
@@ -88,6 +125,12 @@ class Database {
 		}
 	}
 
+	/**
+	 * Handles insert-queries given by a query string.
+	 * @param string $comment
+	 * @param string $query
+	 * @return string|false ID of the inserted data, false in case of any failure
+	 */
 	public static function insert($comment, $query){
 		return self::$main->iquery($comment, $query, self::$RETURN_LASTINSERTID);
 	}
