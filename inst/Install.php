@@ -8,6 +8,7 @@
 /**
  * Installation of Tethys
  * ======================
+ * http://gitfabian.github.io/Tethys/install.html
  * After cloning the repository please run index.php from your browser. You will be guided through the installation.
  *
  * Technical details
