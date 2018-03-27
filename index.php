@@ -6,7 +6,8 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 require_once 'Start.php';
-$page = Start::init("core_index", Settings::get_core_value("INDEX_TITLE"));
+$page = Start::init("core_index", "Start");
+$page->reset("core_index", Config::get_core_value("INDEX_TITLE"));
 
 $page->addHtml("Hello World");
 

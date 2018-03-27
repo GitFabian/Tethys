@@ -44,4 +44,8 @@ class Config {
 
 	}
 
+	public static function get_core_value($id) {
+
+	}
+
 }
