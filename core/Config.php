@@ -9,23 +9,31 @@
  * Load Tethys configuration files and tables.
  * include_once ROOT_HDD_CORE."/core/Config.php";
  */
-
 class Config {
 
+	/**
+	 * Called by @see Start::init.
+	 * @param string $pageId
+	 */
 	public static function load_config($pageId) {
 		self::load_hdd_config($pageId);
 	}
 
+	/**
+	 * Part of the installer
+	 * @param string $message
+	 */
 	private static function create_config_link($message) {
 		include_once ROOT_HDD_CORE . '/inst/Install.php';
 		Install::create_config_link($message);
 	}
 
-	private static function create_config_file() {
-		include_once ROOT_HDD_CORE . '/inst/Install.php';
-		Install::create_config_file();
-	}
-
+	/**
+	 * The file config_link.php holds a link to the configuration file.
+	 * The configuration file (TCFGFILE) loads the first project specific settings.
+	 * See: https://raw.githubusercontent.com/GitFabian/Tethys/master/inst/tpl_config.php
+	 * @param string $pageId
+	 */
 	private static function load_hdd_config($pageId) {
 
 		if (!file_exists(ROOT_HDD_CORE . '/config_link.php')) {
@@ -37,8 +45,10 @@ class Config {
 		if (!defined("TCFGFILE"))
 			self::create_config_link("Config link currupt!");
 
-		if (!file_exists(TCFGFILE))
-			self::create_config_file();
+		if (!file_exists(TCFGFILE)){
+			include_once ROOT_HDD_CORE . '/inst/Install.php';
+			Install::create_config_file();
+		}
 
 		include_once TCFGFILE;
 
