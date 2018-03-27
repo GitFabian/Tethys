@@ -31,7 +31,7 @@ class Config {
 	/**
 	 * The file config_link.php holds a link to the configuration file.
 	 * The configuration file (TCFGFILE) loads the first project specific settings.
-	 * See: https://raw.githubusercontent.com/GitFabian/Tethys/master/inst/tpl_config.php
+	 * See: https://github.com/GitFabian/Tethys/blob/master/inst/tpl_config.php#L1
 	 * @param string $pageId
 	 */
 	private static function load_hdd_config($pageId) {
