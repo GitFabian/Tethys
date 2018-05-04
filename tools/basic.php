@@ -12,7 +12,7 @@
 
 /**
  * Encapsulates reading of a value from the $_REQUEST array.
- * @param string $key
+ * @param string      $key
  * @param string|null $default
  * @return string|null
  */
@@ -64,7 +64,7 @@ function escape_value_bs($string) {
 
 /**
  * Other syntax for the str_replace function.
- * @param array $substitutions An associative array containing the substitutions.
+ * @param array  $substitutions An associative array containing the substitutions.
  * @param string $string
  * @return mixed
  */
@@ -101,7 +101,7 @@ function html_a_button($link, $label) {
  * Comments marked as follows will be removed:
  * &#47;&#42;&#42;TPLDOCSTART This comment will be removed TPLDOCEND&#42;&#47;
  * @param string $file
- * @param array $replacements
+ * @param array  $replacements
  * @return string
  */
 function template_load($file, $replacements) {
@@ -130,11 +130,11 @@ function template_load($file, $replacements) {
  * Saves a string to a file.
  * @param string $file
  * @param string $content
- * @param bool $append
+ * @param bool   $append
  */
-function file_save($file, $content, $append=false){
+function file_save($file, $content, $append = false) {
 	/** Explanation of the file params: http://gitfabian.github.io/Tethys/php/files.html */
-	$file = fopen($file, $append?"a":"w");
+	$file = fopen($file, $append ? "a" : "w");
 	$success = false;
 	if ($file !== false) {
 		$success = fwrite($file, $content);

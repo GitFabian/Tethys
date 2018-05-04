@@ -5,6 +5,7 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 /**
  * Load Tethys configuration files and tables.
  * include_once ROOT_HDD_CORE."/core/Config.php";
@@ -45,7 +46,7 @@ class Config {
 		if (!defined("TCFGFILE"))
 			self::create_config_link("Config link currupt!");
 
-		if (!file_exists(TCFGFILE)){
+		if (!file_exists(TCFGFILE)) {
 			include_once ROOT_HDD_CORE . '/inst/Install.php';
 			Install::create_config_file();
 		}
