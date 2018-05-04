@@ -13,11 +13,15 @@
 class Database {
 
 	//Return types:
-	/** Returns id value of the inserted set of data.
-	 * Used by the function @see insert. */
+	/**
+	 * Returns id value of the inserted set of data.
+	 * Used by the function @see insert.
+	 */
 	public static $RETURN_LASTINSERTID =1 ;
-	/** Returns result of the SELECT query in form of an associative array.
-	 *  */
+	/**
+	 * Returns result of the SELECT query in form of an associative array.
+	 *
+	 */
 	public static $RETURN_FETCHALLCOLUMN =2 ;
 
 	/** @var Database */
@@ -49,7 +53,7 @@ class Database {
 		$this->set_error(Errors::format_exception($e), $e->getCode());
 		if($exit_on_error){
 
-			//Handelt es sich um die Initialisierung der main-database?
+			//Is no main database set?
 			if(self::$main==null){
 				if($this->error_code==1049/*Unknown database*/){
 					include_once ROOT_HDD_CORE . '/inst/Install.php';

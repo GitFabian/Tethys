@@ -137,11 +137,9 @@ class Page {
 		 */
 		$messages = "";
 		if ($this->messages) {
-			//@formatter:off
 			$messages = "<div class='messages'>\n\t"
 					. implode("\n\t", $this->messages) . "\n"
 				. "</div>";
-			//@formatter:on
 		}
 
 		/*

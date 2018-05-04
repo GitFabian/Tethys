@@ -11,10 +11,10 @@
  * Holds the static function init, which loads the Tethys framework.
  * Code example:
  * <code>
-require_once 'Start.php';
-$page = Start::init("pageId", "Page title");
-$page->addHtml("Hello World");
-$page->send_and_quit();
+ * require_once 'Start.php';
+ * $page = Start::init("pageId", "Page title");
+ * $page->addHtml("Hello World");
+ * $page->send_and_quit();
  * </code>
  */
 class Start {

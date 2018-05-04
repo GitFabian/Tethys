@@ -98,6 +98,8 @@ function html_a_button($link, $label) {
 
 /**
  * Loads a template file, fills in the values and returns the content as a string.
+ * Comments marked as follows will be removed:
+ * &#47;&#42;&#42;TPLDOCSTART This comment will be removed TPLDOCEND&#42;&#47;
  * @param string $file
  * @param array $replacements
  * @return string
