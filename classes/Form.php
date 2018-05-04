@@ -8,6 +8,7 @@
 /**
  * This file contains classes Form, Formfield and children (different types) of Formfield.
  */
+
 /**
  *
  * Class Form
@@ -108,13 +109,13 @@ class Formfield {
 	 *                    If set to true, the default value ($value) can be overwritten by the request.
 	 *                    Example: .../myform.php?myvalue=Foo
 	 */
-	function __construct($name, $title = null, $value = null, $val_from_request=true) {
+	function __construct($name, $title = null, $value = null, $val_from_request = true) {
 		$this->name = $name;
 
 		//Title: If set to null, the fieldname is used as label.
 		$this->title = ($title === null ? $name : $title);
 
-		$this->value = $val_from_request?request_value($name, $value):$value;
+		$this->value = $val_from_request ? request_value($name, $value) : $value;
 	}
 
 	/**

@@ -7,7 +7,7 @@
  *
  * This template is used to create "config_link.php", which is created by the installer and contains a link to the
  * configuration file.
- TPLDOCEND*/
+ * TPLDOCEND*/
 /**
  * This file was created by the Tethys installer using the template tpl_cfglink.php.
  * It is excluded from the repository.

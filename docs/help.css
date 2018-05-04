@@ -1,94 +1,110 @@
 html {
 	height: 100%;
 }
-body{
-	white-space:pre-wrap;
-	margin:-10px 10px 0 10px;
-	padding-left:60px;
-	max-width:965px;
-	min-height:100%;
-	border-right:2px dashed lightgray;
+
+body {
+	white-space: pre-wrap;
+	margin: -10px 10px 0 10px;
+	padding-left: 60px;
+	max-width: 965px;
+	min-height: 100%;
+	border-right: 2px dashed lightgray;
 	font-family: "Courier New", monospace;
-	font-size:14px;
-	color:#070707;
+	font-size: 14px;
+	color: #070707;
 	tab-size: 4;
 	-moz-tab-size: 4;
 }
-h1,h2,h3,h4{
+
+h1, h2, h3, h4 {
 	font-family: Verdana, serif;
 	margin: 0 0 -10px 0;
-	font-weight:normal;
+	font-weight: normal;
 }
-h1{
-	margin-left:-60px;
-	font-size:26px;
+
+h1 {
+	margin-left: -60px;
+	font-size: 26px;
 	color: #c80000;
 }
-h2{
-	margin-left:-40px;
-	font-size:22px;
+
+h2 {
+	margin-left: -40px;
+	font-size: 22px;
 	color: #960000;
 }
-h3{
-	margin-left:-20px;
-	font-size:18px;
+
+h3 {
+	margin-left: -20px;
+	font-size: 18px;
 	color: #640000;
 }
-h4{
-	margin-left:-10px;
-	font-size:16px;
+
+h4 {
+	margin-left: -10px;
+	font-size: 16px;
 	font-weight: bold;
 }
-h5{
-	font:inherit;
+
+h5 {
+	font: inherit;
 	font-weight: bold;
 }
+
 p.code,
-code{
-	color:darkgreen;
+code {
+	color: darkgreen;
 	background: #e9e9e9;
-	padding:0 .5em;
+	padding: 0 .5em;
 }
-p{
-	display:inline-block;
-	white-space:normal;
-	margin:0;
+
+p {
+	display: inline-block;
+	white-space: normal;
+	margin: 0;
 }
-p.code{
-	padding:.5em 1em;
+
+p.code {
+	padding: .5em 1em;
 }
-div.nav{
-	background:gray;
-	margin:-10px 0 -10px -70px;
-	padding:10px;
+
+div.nav {
+	background: gray;
+	margin: -10px 0 -10px -70px;
+	padding: 10px;
 	font-family: Verdana, serif;
-	color:white;
-	border-bottom:2px solid lightgray;
+	color: white;
+	border-bottom: 2px solid lightgray;
 }
-div.nav ul{
+
+div.nav ul {
 	list-style: none;
-	display:inline-block;
-	padding:0;
+	display: inline-block;
+	padding: 0;
 	vertical-align: top;
 	margin: 0 0 -4px 15px;
 }
-div.nav ul li{
-	display:inline-block;
-	margin-left:15px;
-	background:lightgray;
+
+div.nav ul li {
+	display: inline-block;
+	margin-left: 15px;
+	background: lightgray;
 }
-div.nav ul li a{
-	display:inline-block;
-	text-decoration:none;
-	color:black;
-	padding:2px 8px;
+
+div.nav ul li a {
+	display: inline-block;
+	text-decoration: none;
+	color: black;
+	padding: 2px 8px;
 }
-div.nav ul li a:hover{
-	text-decoration:underline;
+
+div.nav ul li a:hover {
+	text-decoration: underline;
 }
-b.note{
-	display:inline-block;
+
+b.note {
+	display: inline-block;
 	font-weight: normal;
 	background: #fff9b4;
-	padding:.5em 1em;
+	padding: .5em 1em;
 }

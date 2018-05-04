@@ -7,7 +7,7 @@
  *
  * This template is used by the installer ( @see Install::save_config ) to create the configuration file
  * (location specified in the file "config_link.php" (default: directory above Tethys root folder)).
-TPLDOCEND*/
+ * TPLDOCEND*/
 /**
  * This file was created by the Tethys installer using the template tpl_config.php.
  * It should be part of your project's repository.
@@ -18,4 +18,4 @@ TPLDOCEND*/
 define('TETHYSDB', ':db_name');
 
 //Creation of the main database connection:
-Database::set_main_connection(new Database(":server_addr",TETHYSDB,":username",":dbpass"));
+Database::set_main_connection(new Database(":server_addr", TETHYSDB, ":username", ":dbpass"));

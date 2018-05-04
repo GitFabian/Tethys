@@ -5,6 +5,7 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 /**
  * Installation of Tethys
  * ======================
@@ -36,7 +37,7 @@ class Install {
 	 * @param $message string
 	 */
 	public static function create_config_link($message) {
-		$page=self::initialize_install("installer_config_link");
+		$page = self::initialize_install("installer_config_link");
 		include_once(ROOT_HDD_CORE . '/classes/Form.php');
 
 		if (request_cmd("cmd_save_cfglink")) self::save_config_link($page, request_value("cfglink"));
@@ -90,7 +91,7 @@ class Install {
 		}
 
 		//Set page title:
-		$page=Page::get_global_page()->reset($page_id, "Installation of Tethys");
+		$page = Page::get_global_page()->reset($page_id, "Installation of Tethys");
 
 		//Set skin.
 		//Works only from the root directory:
@@ -107,7 +108,7 @@ class Install {
 	 * Second call (cmd value set): @see Install::save_config
 	 */
 	public static function create_config_file() {
-		$page=self::initialize_install("installer_config");
+		$page = self::initialize_install("installer_config");
 		include_once(ROOT_HDD_CORE . '/classes/Form.php');
 
 		if (request_cmd("cmd_save_installer")) self::save_config($page);
@@ -160,32 +161,32 @@ class Install {
 	 *
 	 * @return string
 	 */
-	public static function dbinit(){
+	public static function dbinit() {
 
 		//Datenbank-Initialisierung:
-		if(request_cmd("dodbinit")){
+		if (request_cmd("dodbinit")) {
 			try {
-				$dbh = new PDO("mysql:host=".request_value("server_addr"), request_value("username"), request_value("dbpass"));
+				$dbh = new PDO("mysql:host=" . request_value("server_addr"), request_value("username"), request_value("dbpass"));
 
-				$dbh->exec("CREATE DATABASE `".TETHYSDB."`;") or die(print_r($dbh->errorInfo(), true));
+				$dbh->exec("CREATE DATABASE `" . TETHYSDB . "`;") or die(print_r($dbh->errorInfo(), true));
 
 			} catch (PDOException $e) {
-				die("DB ERROR: ". $e->getMessage());
+				die("DB ERROR: " . $e->getMessage());
 			}
 
-			$page=Page::get_global_page();
+			$page = Page::get_global_page();
 			$page->addMessageConfirm("Datenbank erstellt!");
 			$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
 			$page->send_and_quit();
 		}
 
 		//Eingabe von Benutzername und Passwort:
-		include_once(ROOT_HDD_CORE.'/classes/Form.php');
-		$form=new Form("","Absenden","dodbinit");
-		$form->add_field(new Formfield_text("server_addr","Server","localhost"));
-		$form->add_field(new Formfield_text("username","Username","root"));
-		$form->add_field(new Formfield_password("dbpass","Password"));
-		return "<h2>Datenbank anlegen</h2>".$form;
+		include_once(ROOT_HDD_CORE . '/classes/Form.php');
+		$form = new Form("", "Absenden", "dodbinit");
+		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
+		$form->add_field(new Formfield_text("username", "Username", "root"));
+		$form->add_field(new Formfield_password("dbpass", "Password"));
+		return "<h2>Datenbank anlegen</h2>" . $form;
 	}
 
 }

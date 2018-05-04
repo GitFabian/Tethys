@@ -84,7 +84,7 @@ class Page {
 	/**
 	 * To markup the added text with some CSS, JS or whatever this function can be used.
 	 * @param string $html
-	 * @param array $params
+	 * @param array  $params
 	 */
 	public function addDiv($html, $params = array()) {
 		$this->inner_body .= "<div " . html_tag_keyValues($params) . ">$html</div>";
