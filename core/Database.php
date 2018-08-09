@@ -18,12 +18,17 @@ class Database {
 	 * Returns id value of the inserted set of data.
 	 * Used by the function @see insert.
 	 */
-	public static $RETURN_LASTINSERTID = 1;
+	const RETURN_LASTINSERTID = 1;
 	/**
 	 * Returns result of the SELECT query in form of an associative array.
-	 *
+	 * Used by the function @see select.
 	 */
-	public static $RETURN_FETCHALLCOLUMN = 2;
+	const RETURN_ASSOC = 2;
+	/**
+	 * Returns the number of rows affected by the last query.
+	 * Used by the function @see delete.
+	 */
+	const RETURN_ROWCOUNT = 3;
 
 	/** @var Database */
 	private static $main = null;
@@ -59,7 +64,7 @@ class Database {
 				if ($this->error_code == 1049/*Unknown database*/) {
 					include_once ROOT_HDD_CORE . '/inst/Install.php';
 					$page = Install::initialize_install("installer_dbinit");
-					$dbinitform = Install::dbinit();
+					$dbinitform = Install::dbinit_1();
 					$page->addMessageInfo("Datenbank nicht vorhanden!");
 					$page->addHtml($dbinitform);
 					$page->send_and_quit();
@@ -90,6 +95,14 @@ class Database {
 		$this->error_code = $code ?: $error;
 	}
 
+	public static function get_error_msg(){
+		return self::$main->error_msg;
+	}
+
+	public static function get_error_code(){
+		return self::$main->error_code;
+	}
+
 	private function reset_error() {
 		$this->set_error(false, false, false);
 	}
@@ -107,7 +120,7 @@ class Database {
 	 * Handles different types of queries, specified by $return
 	 * @param string $comment
 	 * @param string $query
-	 * @param int    $return_type Database::$RETURN_...
+	 * @param int    $return_type Database::RETURN_...
 	 * @return array|false|null|string
 	 */
 	private function iquery($comment, $query, $return_type) {
@@ -120,11 +133,14 @@ class Database {
 			return false;
 		}
 		switch ($return_type) {
-			case self::$RETURN_LASTINSERTID:
+			case self::RETURN_LASTINSERTID:
 				return $this->pdo->lastInsertId();
 				break;
-			case self::$RETURN_FETCHALLCOLUMN:
-				return $statement->fetchAll(PDO::FETCH_COLUMN);
+			case self::RETURN_ASSOC:
+				return $statement->fetchAll(PDO::FETCH_ASSOC);
+				break;
+			case self::RETURN_ROWCOUNT:
+				return $statement->rowCount();
 				break;
 			default:
 				return null;/*No return type specified*/
@@ -133,13 +149,64 @@ class Database {
 	}
 
 	/**
-	 * Handles insert-queries given by a query string.
+	 * Handles INSERT-queries given by a query string.
 	 * @param string $comment
 	 * @param string $query
 	 * @return string|false ID of the inserted data, false in case of any failure
 	 */
 	public static function insert($comment, $query) {
-		return self::$main->iquery($comment, $query, self::$RETURN_LASTINSERTID);
+		return self::$main->iquery($comment, $query, self::RETURN_LASTINSERTID);
+	}
+
+	/**
+	 * Handles DELETE-queries given by a query string.
+	 * @param string $comment
+	 * @param string $query
+	 * @return int|false Number of deleted rows or false in case of any failure
+	 */
+	public static function delete($comment, $query) {
+		return self::$main->iquery($comment, $query, self::RETURN_ROWCOUNT);
+	}
+
+	/**
+	 * Handles SELECT-queries given by a query string.
+	 * @param string $comment
+	 * @param string $query
+	 * @return array|false Array of associative array containing requested data or false in case of any failure
+	 */
+	public static function select($comment, $query) {
+		return self::$main->iquery($comment, $query, self::RETURN_ASSOC);
+	}
+
+	/**
+	 * Handles SELECT-queries of a single data row given by a query string.
+	 * @param string $comment
+	 * @param string $query
+	 * @return array|false Associative array containing first row of the requested data or false in case of any failure
+	 */
+	public static function select_single($comment, $query) {
+		$response = self::select($comment, $query);
+		if(!empty($response)){
+			return $response[0];
+		}
+		return false;
+	}
+
+	/**
+	 * Handles SELECT-queries of a single data cell.
+	 * @param string $comment
+	 * @param string $query
+	 * @param string $column_title
+	 * @param string $default_value
+	 * @return string|false Value of the given column of the first row of the requested data
+	 *                      or false in case of any failure
+	 */
+	public static function select_single_col($comment, $query, $column_title, $default_value) {
+		$response = self::select_single($comment, $query);
+		if(!empty($response)){
+			return $response[$column_title];
+		}
+		return $default_value;
 	}
 
 }

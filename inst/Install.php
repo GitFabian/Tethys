@@ -161,7 +161,7 @@ class Install {
 	 *
 	 * @return string
 	 */
-	public static function dbinit() {
+	public static function dbinit_1() {
 
 		//Datenbank-Initialisierung:
 		if (request_cmd("dodbinit")) {
@@ -187,6 +187,28 @@ class Install {
 		$form->add_field(new Formfield_text("username", "Username", "root"));
 		$form->add_field(new Formfield_password("dbpass", "Password"));
 		return "<h2>Datenbank anlegen</h2>" . $form;
+	}
+
+	/**
+	 * Runs the first basic database queries.
+	 */
+	public static function dbinit_2() {
+		Database::delete("Database initialisation","CREATE TABLE `core_config` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `key` varchar(20) COLLATE utf8_bin NOT NULL,
+  `module` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  `user` int(11) DEFAULT NULL,
+  `value` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+INSERT INTO `core_config` (`key`, `module`, `user`, `value`) VALUES
+('INDEX_TITLE', NULL, NULL, 'MyTethys');");
+
+		$page = Page::get_global_page();
+		$page->addMessageInfo("Datenbank wurde initialisiert!");
+		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
+		$page->send_and_quit();
 	}
 
 }

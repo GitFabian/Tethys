@@ -63,6 +63,15 @@ function escape_value_bs($string) {
 }
 
 /**
+ * Alias for @see escape_value_bs . Useful for later introduction of PDO's.
+ * @param string $string
+ * @return string
+ */
+function escape_sql($string) {
+	return escape_value_bs($string);
+}
+
+/**
  * Other syntax for the str_replace function.
  * @param array  $substitutions An associative array containing the substitutions.
  * @param string $string
@@ -143,4 +152,9 @@ function file_save($file, $content, $append = false) {
 	if ($success === false) {
 		Page::get_global_page()->exit_with_error("Speichern der Datei \"$file\" fehlgeschlagen!");
 	}
+}
+
+function debug_out($var){
+	echo "<pre>";var_dump($var);echo "</pre>";
+	exit;
 }
