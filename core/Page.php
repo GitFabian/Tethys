@@ -8,7 +8,7 @@
 
 /**
  * Class Page
- * Read about the "pages" concept: http://gitfabian.github.io/Tethys/pages.html
+ * Read about this concept: http://gitfabian.github.io/Tethys/pages.html
  * This class represents the HTML-page that is returned to browser in the end.
  * The static $global_page is set on initialization (called by @see Start::init ).
  */

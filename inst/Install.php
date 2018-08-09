@@ -25,7 +25,7 @@
  *         Configuration file (template: tpl_config.php) calls new Database calls new PDO with name of not-yet-existing
  *         Tethys database thus throws error handled in @see Database::fehler_beim_pdo_erstellen, which in case of a
  *         1049 ("Unknown database") calls @see Install::dbinit.
- * Next step ist the initialization of the Database that is done by the @see Config.
+ * Next step is the initialization of the Database that is done by the @see Config.
  *
  * include_once ROOT_HDD_CORE . '/inst/Install.php';
  */

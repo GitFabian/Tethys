@@ -1,11 +1,13 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
 <div class="nav">Tethys documentation<ul><li><a href="index.html">Index</a></li></ul></div>
-<h1>Pages</h1>
+<h1>Class Page</h1>
 <a href="https://github.com/GitFabian/Tethys/blob/master/core/Page.php#L1">https://github.com/GitFabian/Tethys/blob/master/core/Page.php#L1</a>
 
 <h3>Concept</h3>
-Tethys' architectural concept is based on "pages". This means every request from the client is processed in the very
-PHP-file. All specific corresponding functionality and design is placed in the same folder or namespace. More general
-functionality and design is referenced (e.g. <code>require_once</code> or <a href="https://github.com/GitFabian/Tethys/blob/master/core/Page.php#L1">$page->include_...</a>).
+To handle the response with all the HTML Code, references (JS, CSS), Debug-Information, Messages, Navigation and so on
+there's a static $global_page available that you can interact with while processing the request.
+
+<h4>$page->include_...</h4>
+
 
 </body></html>
