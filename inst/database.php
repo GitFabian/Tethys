@@ -5,10 +5,8 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-require_once 'Start.php';
-$page = Start::init("core_index", "Start");
-$page->reset("core_index", Config::get_core_value("INDEX_TITLE"));
-
-$page->addHtml("Hello World");
-Database::delete("","DROP TABLE core_config");
-$page->send_and_quit();
+/*
+ *
+ */
+q("2","SELECT * FROM core_config;");
+q("3","SELECT * FROM core_config;");

@@ -33,4 +33,22 @@ class Errors {
 		return $html;
 	}
 
+	public static function die_hard($message, $level = 0) {
+		echo $message." ".self::get_stacktrace($level+1);
+		exit;
+	}
+
+	public static function get_stacktrace($level) {
+		$backtrace = debug_backtrace();
+		if ($backtrace && is_array($backtrace) && isset($backtrace[$level])) {
+			$caller = (isset($backtrace[$level]["file"]) ? $backtrace[$level]["file"] : "?")
+				. ":"
+				. (isset($backtrace[$level]["line"]) ? $backtrace[$level]["line"] : "?");
+			if ($caller == ":") $caller = "unknown_dynamic_call";
+		} else {
+			$caller = "unknown_caller";
+		}
+		return $caller;
+	}
+
 }

@@ -209,4 +209,48 @@ class Database {
 		return $default_value;
 	}
 
+	/**
+	 * Adds data ($data_set and $data_where) to table $tabelle if it doesn't yet exist ($data_where).
+	 * If $data_where exists the data from $data_set in $tabelle will be updated.
+	 */
+	public static function update_or_insert($tabelle, $data_where, $data_set) {
+		if (empty($data_where) && empty($data_set)) return;
+
+		//Build the WHERE statement:
+		$where_sql = array();
+		foreach ($data_where as $key => $value) {
+			$where_sql[] = "`$key` = '" . escape_sql($value) . "'";
+		}
+		$where = implode(" AND ", $where_sql);
+
+		//Check, if data already exists:
+		$query1 = "SELECT count(*) as c FROM $tabelle WHERE $where;";
+		$data = self::select("Check, if data already exists", $query1);
+		$anzahl_treffer = $data[0]["c"];
+
+		if($anzahl_treffer){
+			//Data already exists: UPDATE
+			$set_sql = array();
+			foreach ($data_set as $key => $value) {
+				$set_sql[] = "`$key` = '" . escape_sql($value) . "'";
+			}
+			$set = implode(", ", $set_sql);
+			$query2 = "UPDATE $tabelle SET $set WHERE $where;";
+			self::delete("Data already exists: UPDATE",$query2);
+		}else{
+			//Data didn't exist: INSERT
+			$keys_sql = array();
+			$values_sql = array();
+			$data_alltogehter = $data_where + $data_set;
+			foreach ($data_alltogehter as $key => $value) {
+				$keys_sql[] = "`$key`";
+				$values_sql[] = "'" . escape_sql($value) . "'";
+			}
+			$keys = implode(", ", $keys_sql);
+			$values = implode(", ", $values_sql);
+			$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
+			self::insert("Data didn't exist: INSERT",$query2);
+		}
+	}
+
 }

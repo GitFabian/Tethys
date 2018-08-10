@@ -93,8 +93,8 @@ class Config {
 	 * @param null   $default_value
 	 * @return false|string
 	 */
-	public static function get_core_value($id, $default_value=null) {
-		if(isset(self::$core_config["core"][0][$id])){
+	public static function get_core_value($id, $default_value=null, $use_cache = true) {
+		if($use_cache&&isset(self::$core_config["core"][0][$id])){
 			return self::$core_config["core"][0][$id];
 		}
 		$data = Database::select_single("get_core_value $id",
@@ -103,8 +103,12 @@ class Config {
 			return $default_value;
 		}
 		$value = $data["value"];
-		self::$core_config["core"][0][$id] = $value;
+		if($use_cache)self::$core_config["core"][0][$id] = $value;
 		return $value;
+	}
+
+	public static function set_core_value($id, $value) {
+		Database::update_or_insert("core_config", array("key"=>$id), array("value"=>$value));
 	}
 
 }
