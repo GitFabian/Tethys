@@ -5,10 +5,20 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-require_once 'Start.php';
-$page = Start::init("core_index", "Start");
-$page->reset("core_index", Config::get_core_value("INDEX_TITLE"));
+/**
+ * Debugging-Toolbox
+require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
+ */
 
-$page->addHtml("Hello World");
+class T_Debug {
 
-$page->send_and_quit();
+	/**
+	 * Shows $var and quits.
+	 * @param $var
+	 */
+	public static function out($var){
+		echo "<pre>".print_r($var,1)."</pre>";
+		exit;
+	}
+
+}

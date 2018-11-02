@@ -196,23 +196,7 @@ class Install {
 	public static function dbinit_2() {
 
 		/*
-		 * Create Table core_config
-		 * Insert first values
-		 */
-		Database::delete("Database initialisation","CREATE TABLE `core_config` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(20) COLLATE utf8_bin NOT NULL,
-  `module` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-  `user` int(11) DEFAULT NULL,
-  `value` text COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-INSERT INTO `core_config` (`key`, `module`, `user`, `value`) VALUES
-('INDEX_TITLE', NULL, NULL, 'MyTethys');");
-
-		/*
-		 * Run update queries up to the latest version
+		 * Build database up to the latest version
 		 */
 		require_once ROOT_HDD_CORE.'/tools/database_q.php';
 		include ROOT_HDD_CORE.'/inst/database.php';

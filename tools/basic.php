@@ -8,6 +8,7 @@
 
 /*
  * Basic toolbox
+ * TODO: In Klassen überführen
  */
 
 /**
@@ -152,9 +153,4 @@ function file_save($file, $content, $append = false) {
 	if ($success === false) {
 		Page::get_global_page()->exit_with_error("Speichern der Datei \"$file\" fehlgeschlagen!");
 	}
-}
-
-function debug_out($var){
-	echo "<pre>";var_dump($var);echo "</pre>";
-	exit;
 }

@@ -16,7 +16,8 @@ class Database {
 	//Return types:
 	/**
 	 * Returns id value of the inserted set of data.
-	 * Used by the function @see insert.
+	 * Used by the function \Database::insert.
+	 * @see insert
 	 */
 	const RETURN_LASTINSERTID = 1;
 	/**
@@ -103,6 +104,10 @@ class Database {
 		return self::$main->error_code;
 	}
 
+	public static function doexecute($query){
+		return self::$main->iquery($query,null);
+	}
+
 	private function reset_error() {
 		$this->set_error(false, false, false);
 	}
@@ -118,12 +123,11 @@ class Database {
 
 	/**
 	 * Handles different types of queries, specified by $return
-	 * @param string $comment
 	 * @param string $query
 	 * @param int    $return_type Database::RETURN_...
-	 * @return array|false|null|string
+	 * @return array|false|null|string|int
 	 */
-	private function iquery($comment, $query, $return_type) {
+	private function iquery($query, $return_type) {
 		$this->reset_error();
 		/** @var PDOStatement */
 		$statement = $this->pdo->query($query);
@@ -150,22 +154,29 @@ class Database {
 
 	/**
 	 * Handles INSERT-queries given by a query string.
-	 * @param string $comment
 	 * @param string $query
 	 * @return string|false ID of the inserted data, false in case of any failure
 	 */
-	public static function insert($comment, $query) {
-		return self::$main->iquery($comment, $query, self::RETURN_LASTINSERTID);
+	public static function insert($query) {
+		return self::$main->iquery($query, self::RETURN_LASTINSERTID);
 	}
 
 	/**
 	 * Handles DELETE-queries given by a query string.
-	 * @param string $comment
 	 * @param string $query
 	 * @return int|false Number of deleted rows or false in case of any failure
 	 */
-	public static function delete($comment, $query) {
-		return self::$main->iquery($comment, $query, self::RETURN_ROWCOUNT);
+	public static function delete($query) {
+		return self::$main->iquery($query, self::RETURN_ROWCOUNT);
+	}
+
+	/**
+	 * Handles UPDATE-queries given by a query string.
+	 * @param string $query
+	 * @return int|false Number of modified rows or false in case of any failure
+	 */
+	public static function update($query) {
+		return self::$main->iquery($query, self::RETURN_ROWCOUNT);
 	}
 
 	/**
@@ -175,7 +186,7 @@ class Database {
 	 * @return array|false Array of associative array containing requested data or false in case of any failure
 	 */
 	public static function select($comment, $query) {
-		return self::$main->iquery($comment, $query, self::RETURN_ASSOC);
+		return self::$main->iquery($query, self::RETURN_ASSOC);
 	}
 
 	/**
@@ -236,7 +247,7 @@ class Database {
 			}
 			$set = implode(", ", $set_sql);
 			$query2 = "UPDATE $tabelle SET $set WHERE $where;";
-			self::delete("Data already exists: UPDATE",$query2);
+			self::update($query2);
 		}else{
 			//Data didn't exist: INSERT
 			$keys_sql = array();
@@ -249,7 +260,7 @@ class Database {
 			$keys = implode(", ", $keys_sql);
 			$values = implode(", ", $values_sql);
 			$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
-			self::insert("Data didn't exist: INSERT",$query2);
+			self::insert($query2);
 		}
 	}
 
