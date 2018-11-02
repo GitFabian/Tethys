@@ -68,7 +68,7 @@ class Config {
 	 * If no config table is found, the installation process is triggered.
 	 */
 	private static function load_db_basic() {
-		$data = Database::select("load_db_basic","SELECT `key`,`value` FROM core_config WHERE `key` IN (
+		$data = Database::select("SELECT `key`,`value` FROM core_config WHERE `key` IN (
 'INDEX_TITLE',
 'b',
 'c');");
@@ -97,8 +97,9 @@ class Config {
 		if($use_cache&&isset(self::$core_config["core"][0][$id])){
 			return self::$core_config["core"][0][$id];
 		}
-		$data = Database::select_single("get_core_value $id",
-			"SELECT `value` FROM core_config WHERE `key`='".escape_sql($id)."' AND `module` IS null AND `user` IS null;");
+		$data = Database::select_single("
+				SELECT `value` FROM core_config WHERE `key`='".escape_sql($id)."' AND `module` IS null AND `user` IS null;
+			");
 		if(empty($data)){
 			return $default_value;
 		}

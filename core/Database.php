@@ -181,22 +181,20 @@ class Database {
 
 	/**
 	 * Handles SELECT-queries given by a query string.
-	 * @param string $comment
 	 * @param string $query
 	 * @return array|false Array of associative array containing requested data or false in case of any failure
 	 */
-	public static function select($comment, $query) {
+	public static function select($query) {
 		return self::$main->iquery($query, self::RETURN_ASSOC);
 	}
 
 	/**
 	 * Handles SELECT-queries of a single data row given by a query string.
-	 * @param string $comment
 	 * @param string $query
 	 * @return array|false Associative array containing first row of the requested data or false in case of any failure
 	 */
-	public static function select_single($comment, $query) {
-		$response = self::select($comment, $query);
+	public static function select_single($query) {
+		$response = self::select($query);
 		if(!empty($response)){
 			return $response[0];
 		}
@@ -205,15 +203,14 @@ class Database {
 
 	/**
 	 * Handles SELECT-queries of a single data cell.
-	 * @param string $comment
 	 * @param string $query
 	 * @param string $column_title
 	 * @param string $default_value
 	 * @return string|false Value of the given column of the first row of the requested data
 	 *                      or false in case of any failure
 	 */
-	public static function select_single_col($comment, $query, $column_title, $default_value) {
-		$response = self::select_single($comment, $query);
+	public static function select_single_col($query, $column_title, $default_value) {
+		$response = self::select_single($query);
 		if(!empty($response)){
 			return $response[$column_title];
 		}
@@ -236,7 +233,7 @@ class Database {
 
 		//Check, if data already exists:
 		$query1 = "SELECT count(*) as c FROM $tabelle WHERE $where;";
-		$data = self::select("Check, if data already exists", $query1);
+		$data = self::select($query1);
 		$anzahl_treffer = $data[0]["c"];
 
 		if($anzahl_treffer){
