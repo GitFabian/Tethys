@@ -116,14 +116,14 @@ function html_a_button($link, $label) {
  */
 function template_load($file, $replacements) {
 	if (!file_exists($file)) {
-		Page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
+		\core\Page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
 	}
 
 	//Read template file:
 	$content = file_get_contents($file);
 
 	if ($content === false) {
-		Page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
+		\core\Page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
 	}
 
 	//Replacements:
@@ -151,6 +151,6 @@ function file_save($file, $content, $append = false) {
 		fclose($file);
 	}
 	if ($success === false) {
-		Page::get_global_page()->exit_with_error("Speichern der Datei \"$file\" fehlgeschlagen!");
+		\core\Page::get_global_page()->exit_with_error("Speichern der Datei \"$file\" fehlgeschlagen!");
 	}
 }

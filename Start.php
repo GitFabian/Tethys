@@ -29,14 +29,14 @@ class Start {
 
 		//Load page:
 		require_once ROOT_HDD_CORE . "/core/Page.php";
-		Page::init($pageId, $page_title);
+		\core\Page::init($pageId, $page_title);
 
 		//Load config:
 		require_once ROOT_HDD_CORE . "/core/Database.php";
 		require_once ROOT_HDD_CORE . "/core/Config.php";
-		Config::load_config($pageId);
+		\core\Config::load_config($pageId);
 
-		return Page::get_global_page();
+		return \core\Page::get_global_page();
 	}
 
 }

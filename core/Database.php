@@ -5,6 +5,8 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+namespace core;
+use inst\Install;
 
 /**
  * Contains static methods for database operations.
@@ -34,7 +36,7 @@ class Database {
 	/** @var Database */
 	private static $main = null;
 
-	/** @var PDO */
+	/** @var \PDO */
 	private $pdo;
 	private $error_msg;
 	private $error_code;
@@ -42,9 +44,9 @@ class Database {
 	public function __construct($host, $dbname, $user, $password, $exit_on_error = true) {
 		$this->reset_error();
 		try {
-			$this->pdo = new PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
+			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 			$this->fehler_beim_pdo_erstellen($e, $exit_on_error);
 		}
 	}
@@ -52,10 +54,10 @@ class Database {
 	/**
 	 * Sets the error values in case of a failed PDO instantiation.
 	 * If no main database is set, it is assumed that we are in installation process and the installer is called.
-	 * @param Exception $e
+	 * @param \Exception $e
 	 * @param bool      $exit_on_error
 	 */
-	private function fehler_beim_pdo_erstellen(Exception $e, $exit_on_error) {
+	private function fehler_beim_pdo_erstellen(\Exception $e, $exit_on_error) {
 		require_once ROOT_HDD_CORE . "/core/Errors.php";
 		$this->set_error(Errors::format_exception($e), $e->getCode());
 		if ($exit_on_error) {
@@ -129,7 +131,7 @@ class Database {
 	 */
 	private function iquery($query, $return_type) {
 		$this->reset_error();
-		/** @var PDOStatement */
+		/** @var \PDOStatement */
 		$statement = $this->pdo->query($query);
 		if ($statement === false) {
 			$errorInfo = $this->pdo->errorInfo();
@@ -141,7 +143,7 @@ class Database {
 				return $this->pdo->lastInsertId();
 				break;
 			case self::RETURN_ASSOC:
-				return $statement->fetchAll(PDO::FETCH_ASSOC);
+				return $statement->fetchAll(\PDO::FETCH_ASSOC);
 				break;
 			case self::RETURN_ROWCOUNT:
 				return $statement->rowCount();
@@ -220,6 +222,9 @@ class Database {
 	/**
 	 * Adds data ($data_set and $data_where) to table $tabelle if it doesn't yet exist ($data_where).
 	 * If $data_where exists the data from $data_set in $tabelle will be updated.
+	 * @param string $tabelle
+	 * @param array  $data_where
+	 * @param array  $data_set
 	 */
 	public static function update_or_insert($tabelle, $data_where, $data_set) {
 		if (empty($data_where) && empty($data_set)) return;
@@ -227,7 +232,8 @@ class Database {
 		//Build the WHERE statement:
 		$where_sql = array();
 		foreach ($data_where as $key => $value) {
-			$where_sql[] = "`$key` = '" . escape_sql($value) . "'";
+			$val_sql = $value===null?"IS NULL":("= '" . escape_sql($value) . "'");
+			$where_sql[] = "`$key` $val_sql";
 		}
 		$where = implode(" AND ", $where_sql);
 
@@ -240,7 +246,8 @@ class Database {
 			//Data already exists: UPDATE
 			$set_sql = array();
 			foreach ($data_set as $key => $value) {
-				$set_sql[] = "`$key` = '" . escape_sql($value) . "'";
+				$val_sql = $value===null?"NULL":("'" . escape_sql($value) . "'");
+				$set_sql[] = "`$key` = $val_sql";
 			}
 			$set = implode(", ", $set_sql);
 			$query2 = "UPDATE $tabelle SET $set WHERE $where;";
@@ -249,10 +256,10 @@ class Database {
 			//Data didn't exist: INSERT
 			$keys_sql = array();
 			$values_sql = array();
-			$data_alltogehter = $data_where + $data_set;
+			$data_alltogehter = array_merge($data_where, $data_set);
 			foreach ($data_alltogehter as $key => $value) {
 				$keys_sql[] = "`$key`";
-				$values_sql[] = "'" . escape_sql($value) . "'";
+				$values_sql[] = ($value===null?"NULL":("'" . escape_sql($value) . "'"));
 			}
 			$keys = implode(", ", $keys_sql);
 			$values = implode(", ", $values_sql);

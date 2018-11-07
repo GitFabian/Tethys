@@ -8,7 +8,7 @@
 /**
  * This file contains classes Form, Formfield and children (different types) of Formfield.
  */
-
+namespace core;
 /**
  *
  * Class Form

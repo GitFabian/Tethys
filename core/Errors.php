@@ -5,7 +5,7 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
-
+namespace core;
 /**
  * Class Errors
  * Static methods for error handling.
@@ -15,10 +15,10 @@ class Errors {
 
 	/**
 	 * Formats an exception user friendly. If USER_DEV is set, additional information is included.
-	 * @param Exception $e
+	 * @param \Exception $e
 	 * @return string
 	 */
-	public static function format_exception(Exception $e) {
+	public static function format_exception(\Exception $e) {
 		$html = "";
 		if (USER_DEV) {
 			$html .= "<pre>=========== Fehler #" . $e->getCode() . " ===========\n";

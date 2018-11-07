@@ -7,8 +7,9 @@
  GPL*/
 require_once 'Start.php';
 $page = Start::init("core_index", "Start");
-$page->reset("core_index", Config::get_core_value("INDEX_TITLE"));
+$page->reset("core_index", \core\Config::get_core_value("INDEX_TITLE"));
 
-$page->addHtml("Hello World");
+#\core\Database::delete("DROP TABLE core_config;");
+$page->addHtml("Dropped table core_config.");
 
 $page->send_and_quit();

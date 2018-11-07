@@ -5,6 +5,8 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+namespace core;
+use inst\Install;
 
 /**
  * Load Tethys configuration files and tables.
@@ -86,19 +88,27 @@ class Config {
 		}
 	}
 
+	public static function get_core_value($id, $default_value=null, $user = null, $use_cache = true) {
+		return self::get_value($id, null, $user, $default_value, $use_cache);
+	}
 	/**
 	 * The default value is NOT cached (self::$core_config),
 	 * so the next call of this function can return a different value.
-	 * @param string $id
-	 * @param null   $default_value
-	 * @return false|string
+	 * @param string      $id
+	 * @param string|null $module
+	 * @param int|null    $user
+	 * @param mixed       $default_value
+	 * @param bool        $use_cache
+	 * @return string|mixed
 	 */
-	public static function get_core_value($id, $default_value=null, $use_cache = true) {
-		if($use_cache&&isset(self::$core_config["core"][0][$id])){
-			return self::$core_config["core"][0][$id];
+	public static function get_value($id, $module = null, $user = null, $default_value=null, $use_cache = true) {
+		if($use_cache&&isset(self::$core_config[$module?:"core"][$user?:0][$id])){
+			return self::$core_config[$module?:"core"][$user?:0][$id];
 		}
+		$where1 = "`module`".($module?"='".escape_sql($module)."'":" IS NULL");
+		$where2 = "`user`".($user?"='".escape_sql($user)."'":" IS NULL");
 		$data = Database::select_single("
-				SELECT `value` FROM core_config WHERE `key`='".escape_sql($id)."' AND `module` IS null AND `user` IS null;
+				SELECT `value` FROM core_config WHERE `key`='".escape_sql($id)."' AND $where1 AND $where2;
 			");
 		if(empty($data)){
 			return $default_value;
@@ -108,8 +118,17 @@ class Config {
 		return $value;
 	}
 
-	public static function set_core_value($id, $value) {
-		Database::update_or_insert("core_config", array("key"=>$id), array("value"=>$value));
+	public static function set_core_value($id, $value, $user=null) {
+		self::set_value($id, $value, null, $user);
+	}
+
+	public static function set_value($id, $value, $module=null, $user=null) {
+		$where = array(
+			"key"=>$id,
+			"module"=>$module=="core"?null:$module,
+			"user"=>$user
+		);
+		Database::update_or_insert("core_config", $where, array("value"=>$value));
 	}
 
 }

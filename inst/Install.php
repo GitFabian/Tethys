@@ -5,6 +5,13 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+namespace inst;
+use core\Form;
+use core\Formfield_password;
+use core\Formfield_select;
+use core\Formfield_text;
+use core\Page;
+use core\UpdateDB;
 
 /**
  * Installation of Tethys
@@ -166,11 +173,11 @@ class Install {
 		//Datenbank-Initialisierung:
 		if (request_cmd("dodbinit")) {
 			try {
-				$dbh = new PDO("mysql:host=" . request_value("server_addr"), request_value("username"), request_value("dbpass"));
+				$dbh = new \PDO("mysql:host=" . request_value("server_addr"), request_value("username"), request_value("dbpass"));
 
 				$dbh->exec("CREATE DATABASE `" . TETHYSDB . "`;") or die(print_r($dbh->errorInfo(), true));
 
-			} catch (PDOException $e) {
+			} catch (\PDOException $e) {
 				die("DB ERROR: " . $e->getMessage());
 			}
 
@@ -198,8 +205,10 @@ class Install {
 		/*
 		 * Build database up to the latest version
 		 */
-		require_once ROOT_HDD_CORE.'/tools/database_q.php';
-		include ROOT_HDD_CORE.'/inst/database.php';
+//		require_once ROOT_HDD_CORE.'/tools/database_q.php';
+//		include ROOT_HDD_CORE.'/inst/database.php';
+		$updater = new UpdateDB();
+		$updater->update();
 
 		$page = Page::get_global_page();
 		$page->addMessageInfo("Datenbank wurde initialisiert!");

@@ -3,7 +3,7 @@
 <h1>Modules</h1>
 
 <h3>Naming</h3>
-A module has two names: A cleartext <code>title</code> and a short <code>stringId</code>.
+A module has two names: A cleartext <code>title</code> and a unique <code>stringId</code>.
 The namespace for the <b>stringId</b> is very restricted. The name occures in:
 * PHP variable names
 * DB table names
@@ -11,7 +11,11 @@ The namespace for the <b>stringId</b> is very restricted. The name occures in:
 Additionnaly it will be pre- and suffixed (by underscore) in several contexts.
 The remaining available characters are:
 <p class="code">[A-Za-z0-9]</p>
-<b class="note">The lowercase stringId of the module has to be unique in each project</b>
-To ensure uniqueness the module-IDs have to be renamed possibly on import.
+<b class="note">The lowercase stringId of the module has to be unique (at least in each project)</b>
+
+Uniqueness means you can't have two modules of the same <code>stringId</code> in the same project. Modules that are used in other
+projects should register here to ensure their ID does not collide.
+
+core                             Tethys main core. Often module-ID <i>null</i> is used as an alias.
 
 </body></html>

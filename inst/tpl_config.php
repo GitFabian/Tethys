@@ -18,4 +18,4 @@
 define('TETHYSDB', ':db_name');
 
 //Creation of the main database connection:
-Database::set_main_connection(new Database(":server_addr", TETHYSDB, ":username", ":dbpass"));
+\core\Database::set_main_connection(new \core\Database(":server_addr", TETHYSDB, ":username", ":dbpass"));
