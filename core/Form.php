@@ -28,7 +28,7 @@ class Form {
 	 */
 	private $action;
 	/**
-	 * Form submission method. The submission method is "post" by default, for developers "get".
+	 * Form submission method. The submission method is "post" by default.
 	 * @var string "get"|"post"
 	 */
 	private $method;
@@ -43,14 +43,13 @@ class Form {
 	 * @param string|null $cmd
 	 *                    If set, a hidden key "cmd" is sent on submission.
 	 * @param string|null $method
-	 *                    Form submission method. The submission method is "post" by default, for developers "get".
+	 *                    Form submission method. The submission method is "post" by default.
 	 */
-	public function __construct($action = "", $submit_text = "Absenden", $cmd = null, $method = null) {
+	public function __construct($action = "", $submit_text = "Absenden", $cmd = null, $method = "post") {
 
 		$this->action = $action;
 
-		//The submission method is "post" by default, for developers "get".
-		$this->method = $method ?: (USER_DEV ? "get" : "post");
+		$this->method = $method;
 
 		if ($cmd) {
 			$this->fields[] = new Formfield_hidden("cmd", $cmd);
