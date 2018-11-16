@@ -10,14 +10,20 @@ Example: <code>html</code>
 <h3 id="ROOT_HDD_CORE">ROOT_HDD_CORE</h3>
 Root path to Tethys when accessed via file system.
 Examples:
-	<code>C:\Users\Foo\Workspace\Tethys</code>
-	<code>C:/Users/Foo/Workspace/Tethys</code>
-	<code>/var/www/project1/tethys</code>
+	<code>C:\Users\Foo\Workspace\myproject\Tethys</code>
+	<code>C:/Users/Foo/Workspace/myproject/Tethys</code>
+	<code>/var/www/myproject/tethys</code>
 <b class="note">In windows paths "\" has to be converted to "/" at some points!</b>
 
 <h3 id="ROOT_HTTP_CORE">ROOT_HTTP_CORE</h3>
 Root path to Tethys when accessed via browser.
-Default value: <code>/tethys</code>
-(Should be renamed to your project's title)
+Default value: (detected in installation progress)
+Example:
+	<code>/myproject</code>
+	<code>/myproject/tethys</code>
+
+<h3 id="SKIN_HTTP">SKIN_HTTP</h3>
+Root path to selected skin when accessed via browser.
+Default value: <code>ROOT_HTTP_CORE/demo/skins/synergy</code>
 
 </body></html>

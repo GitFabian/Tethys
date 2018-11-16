@@ -6,10 +6,12 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /**
- *
+ * require_once ROOT_HDD_CORE . "/inst/UpdateDB.php";
  */
 
 namespace core;
+
+require_once ROOT_HDD_CORE . "/core/UpdaterDB.php";
 
 class UpdateDB extends UpdaterDB {
 
@@ -37,7 +39,8 @@ class UpdateDB extends UpdaterDB {
 		//Insert first config values
 		$this->q("2","
 			INSERT INTO `core_config` (`key`, `module`, `user`, `value`) VALUES
-			('INDEX_TITLE', NULL, NULL, 'MyTethys');
+			('INDEX_TITLE', NULL, NULL, 'MyTethys'),
+			('SKIN', NULL, NULL, 'synergy');
 		");
 
 		//

@@ -13,6 +13,9 @@ use core\Formfield_text;
 use core\Page;
 use core\UpdateDB;
 
+require_once ROOT_HDD_CORE . "/inst/UpdateDB.php";
+require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
+
 /**
  * Installation of Tethys
  * ======================
@@ -116,7 +119,7 @@ class Install {
 	 */
 	public static function create_config_file() {
 		$page = self::initialize_install("installer_config");
-		include_once(ROOT_HDD_CORE . '/classes/Form.php');
+		include_once(ROOT_HDD_CORE . '/core/Form.php');
 
 		if (request_cmd("cmd_save_installer")) self::save_config($page);
 
@@ -130,6 +133,11 @@ class Install {
 		$form->add_field($ff = new Formfield_text("username", "Benutzer", "root"));
 			#$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Tabellen verfügen";
 		$form->add_field(new Formfield_password("dbpass", "Passwort"));
+
+		$http_root = $_SERVER["SCRIPT_URL"];
+		$http_root = preg_replace("/\\/$/","",$http_root);
+		$form->add_field(new Formfield_text("ROOT_HTTP_CORE", "HTTP-Root", $http_root));
+
 		$page->addHtml($form);
 
 		$page->send_and_quit();
@@ -152,6 +160,7 @@ class Install {
 			":db_name" => escape_value_bs(request_value("db_name")),
 			":username" => escape_value_bs(request_value("username")),
 			":dbpass" => escape_value_bs(request_value("dbpass")),
+			":ROOT_HTTP_CORE" => escape_value_bs(request_value("ROOT_HTTP_CORE")),
 		));
 
 		file_save(TCFGFILE, $template);
@@ -205,8 +214,6 @@ class Install {
 		/*
 		 * Build database up to the latest version
 		 */
-//		require_once ROOT_HDD_CORE.'/tools/database_q.php';
-//		include ROOT_HDD_CORE.'/inst/database.php';
 		$updater = new UpdateDB();
 		$updater->update();
 

@@ -6,7 +6,7 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 /**
- *
+ * require_once ROOT_HDD_CORE . "/core/UpdaterDB.php";
  */
 namespace core;
 require_once ROOT_HDD_CORE . "/core/Errors.php";
@@ -39,10 +39,15 @@ abstract class UpdaterDB {
 	}
 
 	/**
+	 * Sequence of database-updates.
 	 * @return bool
 	 */
 	abstract protected function do_update();
 
+	/**
+	 * Runs Update (implemented in child classes) and returns version difference.
+	 * @return string|false
+	 */
 	public function update(){
 		$db_version1 = Config::get_value("DB_VERSION",$this->module=="core"?null:$this->module,0,null,false);
 		$this->do_update();

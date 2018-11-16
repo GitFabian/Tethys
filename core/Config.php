@@ -72,8 +72,7 @@ class Config {
 	private static function load_db_basic() {
 		$data = Database::select("SELECT `key`,`value` FROM core_config WHERE `key` IN (
 'INDEX_TITLE',
-'b',
-'c');");
+'SKIN');");
 		if($data===false){
 			$error_code = Database::get_error_code();
 			if($error_code=="42S02"/*Table 'TETHYSDB.core_config' doesn't exist*/){
@@ -86,6 +85,15 @@ class Config {
 		foreach ($data as $row){
 			self::$core_config["core"][0][$row["key"]] = $row["value"];
 		}
+
+		//SKIN_HTTP:
+		$skinname = self::$core_config["core"][0]["SKIN"];
+		if($skinname=="synergy"){
+			define("SKIN_HTTP", ROOT_HTTP_CORE."/demo/skins/$skinname" );
+		}else{
+			define("SKIN_HTTP", ""/*(Konstante für Skin-Verzeichnis noch nicht definiert)*/ );
+		}
+
 	}
 
 	public static function get_core_value($id, $default_value=null, $user = null, $use_cache = true) {

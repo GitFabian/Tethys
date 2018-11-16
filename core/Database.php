@@ -18,18 +18,20 @@ class Database {
 	//Return types:
 	/**
 	 * Returns id value of the inserted set of data.
-	 * Used by the function \Database::insert.
+	 * Used by the function insert.
 	 * @see insert
 	 */
 	const RETURN_LASTINSERTID = 1;
 	/**
 	 * Returns result of the SELECT query in form of an associative array.
-	 * Used by the function @see select.
+	 * Used by the function select.
+	 * @see select
 	 */
 	const RETURN_ASSOC = 2;
 	/**
 	 * Returns the number of rows affected by the last query.
-	 * Used by the function @see delete.
+	 * Used by the function delete.
+	 * @see delete
 	 */
 	const RETURN_ROWCOUNT = 3;
 
@@ -55,7 +57,7 @@ class Database {
 	 * Sets the error values in case of a failed PDO instantiation.
 	 * If no main database is set, it is assumed that we are in installation process and the installer is called.
 	 * @param \Exception $e
-	 * @param bool      $exit_on_error
+	 * @param bool       $exit_on_error
 	 */
 	private function fehler_beim_pdo_erstellen(\Exception $e, $exit_on_error) {
 		require_once ROOT_HDD_CORE . "/core/Errors.php";
