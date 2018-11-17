@@ -9,7 +9,7 @@
 /*.lnk
 
 # This file is created by the installer and contains a link to the configuration file.
-# It's created from the template inst/tpl_cfglink.php.
+# It's created from the template inst/core/tpl_cfglink.php.
 /config_link.php
 
 # IDE's Project-Folders

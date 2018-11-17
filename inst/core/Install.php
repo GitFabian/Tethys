@@ -13,7 +13,7 @@ use core\Formfield_text;
 use core\Page;
 use core\UpdateDB;
 
-require_once ROOT_HDD_CORE . "/inst/UpdateDB.php";
+require_once ROOT_HDD_CORE . "/inst/core/UpdateDB.php";
 require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
 
 /**
@@ -37,7 +37,7 @@ require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
  *         1049 ("Unknown database") calls @see Install::dbinit.
  * Next step is the initialization of the Database that is done by the @see Config.
  *
- * include_once ROOT_HDD_CORE . '/inst/Install.php';
+ * include_once ROOT_HDD_CORE . '/inst/core/Install.php';
  */
 class Install {
 
@@ -74,7 +74,7 @@ class Install {
 	private static function save_config_link(Page $page, $link) {
 
 		//Load template
-		$template = template_load(ROOT_HDD_CORE . "/inst/tpl_cfglink.php", array(
+		$template = template_load(ROOT_HDD_CORE . "/inst/core/tpl_cfglink.php", array(
 			":cfglink" => escape_value_bs($link),
 		));
 
@@ -154,7 +154,7 @@ class Install {
 		}
 
 		//Load template
-		$template = template_load(ROOT_HDD_CORE . "/inst/tpl_config.php", array(
+		$template = template_load(ROOT_HDD_CORE . "/inst/core/tpl_config.php", array(
 			":db_type" => escape_value_bs(request_value("db_type")),
 			":server_addr" => escape_value_bs(request_value("server_addr")),
 			":db_name" => escape_value_bs(request_value("db_name")),

@@ -35,14 +35,14 @@ class Config {
 	 * @param string $message
 	 */
 	private static function create_config_link($message) {
-		include_once ROOT_HDD_CORE . '/inst/Install.php';
+		include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 		Install::create_config_link($message);
 	}
 
 	/**
 	 * The file config_link.php holds a link to the configuration file.
 	 * The configuration file (TCFGFILE) loads the first project specific settings.
-	 * See: https://github.com/GitFabian/Tethys/blob/master/inst/tpl_config.php#L1
+	 * See: https://github.com/GitFabian/Tethys/blob/master/inst/core/tpl_config.php#L1
 	 * @param string $pageId
 	 */
 	private static function load_hdd_config($pageId) {
@@ -57,7 +57,7 @@ class Config {
 			self::create_config_link("Config link currupt!");
 
 		if (!file_exists(TCFGFILE)) {
-			include_once ROOT_HDD_CORE . '/inst/Install.php';
+			include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 			Install::create_config_file();
 		}
 
@@ -76,7 +76,7 @@ class Config {
 		if($data===false){
 			$error_code = Database::get_error_code();
 			if($error_code=="42S02"/*Table 'TETHYSDB.core_config' doesn't exist*/){
-				include_once ROOT_HDD_CORE . '/inst/Install.php';
+				include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 				Install::dbinit_2();
 			}
 			echo("Unbekannter Datenbank-Fehler! " . Database::get_error_msg());
@@ -88,10 +88,10 @@ class Config {
 
 		//SKIN_HTTP:
 		$skinname = self::$core_config["core"][0]["SKIN"];
-		if($skinname=="synergy"){
+		if(substr($skinname,0,5)=="demo_"){
 			define("SKIN_HTTP", ROOT_HTTP_CORE."/demo/skins/$skinname" );
 		}else{
-			define("SKIN_HTTP", ""/*(Konstante für Skin-Verzeichnis noch nicht definiert)*/ );
+			define("SKIN_HTTP", ""/*(Konstante für Skin-Verzeichnis noch nicht definiert) (TODO)*/ );
 		}
 
 	}

@@ -67,7 +67,7 @@ class Database {
 			//Is no main database set?
 			if (self::$main == null) {
 				if ($this->error_code == 1049/*Unknown database*/) {
-					include_once ROOT_HDD_CORE . '/inst/Install.php';
+					include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 					$page = Install::initialize_install("installer_dbinit");
 					$dbinitform = Install::dbinit_1();
 					$page->addMessageInfo("Datenbank nicht vorhanden!");
@@ -75,7 +75,7 @@ class Database {
 					$page->send_and_quit();
 				}
 				if ($this->error_code == 1045/*Access denied*/) {
-					include_once ROOT_HDD_CORE . '/inst/Install.php';
+					include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 					$page = Install::initialize_install("installer_dbinit");
 					$page->exit_with_error("Zugriff auf die Datenbank fehlgeschlagen! Bitte Benutzername und Passwort überprüfen: "
 						. "<code>" . TCFGFILE . "</code>");
