@@ -7,6 +7,10 @@
  GPL*/
 
 /**
+ * In this file the main database is built.
+ * After each query a version number is stored, so you can update to the newest version from every state of your
+ * database.
+ *
  * require_once ROOT_HDD_CORE . "/inst/core/UpdateDB.php";
  */
 
