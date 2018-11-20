@@ -5,9 +5,11 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 /**
  * This file contains classes Form, Formfield and children (different types) of Formfield.
  */
+
 namespace core;
 /**
  *
@@ -142,8 +144,8 @@ class Formfield {
 		$title = $tooltip ? "title='" . escape_value_html($tooltip) . "'" : "";
 
 		return "<div" . $this->getParams_outer() . ">"
-				. "<label $title>$label</label>"
-				. $this->inner_html()
+			. "<label $title>$label</label>"
+			. $this->inner_html()
 			. "</div>";
 	}
 

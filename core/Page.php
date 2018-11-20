@@ -5,6 +5,7 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 namespace core;
 /**
  * Class Page
@@ -138,7 +139,7 @@ class Page {
 		$messages = "";
 		if ($this->messages) {
 			$messages = "<div class='messages'>\n\t"
-					. implode("\n\t", $this->messages) . "\n"
+				. implode("\n\t", $this->messages) . "\n"
 				. "</div>";
 		}
 
@@ -151,6 +152,7 @@ class Page {
 			$css_html .= "<link href=\"$url\" rel=\"stylesheet\" type=\"text/css\" media=\"$media\"/>\n";
 		}
 
+		// @formatter:off
 		echo "<!DOCTYPE html>"
 			."<html>\n"
 				."<head>\n"
@@ -163,6 +165,7 @@ class Page {
 					."<div class='body_inner'>$this->inner_body</div>"
 				."</div></body>"
 			."</html>";
+		// @formatter:on
 
 		exit;
 	}

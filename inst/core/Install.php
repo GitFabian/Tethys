@@ -5,7 +5,10 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 namespace inst;
+
+use core\Config;
 use core\Form;
 use core\Formfield_password;
 use core\Formfield_select;
@@ -27,15 +30,22 @@ require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
  * Step 1: Create file with link to the config.
  *         index.php calls Start::init calls Config::load_config calls Config::load_hdd_config.
  *         Before loading the config this routine recognizes missing of the file config_link.php and calls
- *         @see Install::create_config_link.
+ *         Install::create_config_link.
  * Step 2: Create config file.
- *         Function @see Config::load_hdd_config detects missing config file and calls
- *         @see Install::create_config_file.
+ *         Function Config::load_hdd_config detects missing config file and calls
+ *         Install::create_config_file.
  * Step 3: Creation of the database.
  *         Configuration file (template: tpl_config.php) calls new Database calls new PDO with name of not-yet-existing
- *         Tethys database thus throws error handled in @see Database::fehler_beim_pdo_erstellen, which in case of a
- *         1049 ("Unknown database") calls @see Install::dbinit.
- * Next step is the initialization of the Database that is done by the @see Config.
+ *         Tethys database thus throws error handled in Database::fehler_beim_pdo_erstellen, which in case of a
+ *         1049 ("Unknown database") calls Install::dbinit.
+ * Next step is the initialization of the Database that is done by the Config.
+ *
+ * @see Install::create_config_link
+ * @see Config::load_hdd_config
+ * @see Install::create_config_file
+ * @see Database::fehler_beim_pdo_erstellen
+ * @see Install::dbinit
+ * @see Config
  *
  * include_once ROOT_HDD_CORE . '/inst/core/Install.php';
  */
@@ -130,12 +140,14 @@ class Install {
 		$form->add_field(new Formfield_select("db_type", "Engine", array("mysql" => "MySQL")));
 		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
 		$form->add_field(new Formfield_text("db_name", "Name", "tethys"));
+
 		$form->add_field($ff = new Formfield_text("username", "Benutzer", "root"));
-			#$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Tabellen verfügen";
+		#$ff->tooltip = "Der Benutzer muss über Rechte fürs Anlegen von Tabellen verfügen";
+
 		$form->add_field(new Formfield_password("dbpass", "Passwort"));
 
 		$http_root = $_SERVER["SCRIPT_URL"];
-		$http_root = preg_replace("/\\/$/","",$http_root);
+		$http_root = preg_replace("/\\/$/", "", $http_root);
 		$form->add_field(new Formfield_text("ROOT_HTTP_CORE", "HTTP-Root", $http_root));
 
 		$page->addHtml($form);

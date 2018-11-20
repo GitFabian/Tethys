@@ -5,7 +5,9 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 namespace core;
+
 use inst\Install;
 
 /**
@@ -73,32 +75,33 @@ class Config {
 		$data = Database::select("SELECT `key`,`value` FROM core_config WHERE `key` IN (
 'INDEX_TITLE',
 'SKIN');");
-		if($data===false){
+		if ($data === false) {
 			$error_code = Database::get_error_code();
-			if($error_code=="42S02"/*Table 'TETHYSDB.core_config' doesn't exist*/){
+			if ($error_code == "42S02"/*Table 'TETHYSDB.core_config' doesn't exist*/) {
 				include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 				Install::dbinit_2();
 			}
 			echo("Unbekannter Datenbank-Fehler! " . Database::get_error_msg());
 			exit;
 		}
-		foreach ($data as $row){
+		foreach ($data as $row) {
 			self::$core_config["core"][0][$row["key"]] = $row["value"];
 		}
 
 		//SKIN_HTTP:
 		$skinname = self::$core_config["core"][0]["SKIN"];
-		if(substr($skinname,0,5)=="demo_"){
-			define("SKIN_HTTP", ROOT_HTTP_CORE."/demo/skins/$skinname" );
-		}else{
-			define("SKIN_HTTP", ""/*(Konstante für Skin-Verzeichnis noch nicht definiert) (TODO)*/ );
+		if (substr($skinname, 0, 5) == "demo_") {
+			define("SKIN_HTTP", ROOT_HTTP_CORE . "/demo/skins/$skinname");
+		} else {
+			define("SKIN_HTTP", ""/*(Konstante für Skin-Verzeichnis noch nicht definiert) (TODO)*/);
 		}
 
 	}
 
-	public static function get_core_value($id, $default_value=null, $user = null, $use_cache = true) {
+	public static function get_core_value($id, $default_value = null, $user = null, $use_cache = true) {
 		return self::get_value($id, null, $user, $default_value, $use_cache);
 	}
+
 	/**
 	 * The default value is NOT cached (self::$core_config),
 	 * so the next call of this function can return a different value.
@@ -109,34 +112,34 @@ class Config {
 	 * @param bool        $use_cache
 	 * @return string|mixed
 	 */
-	public static function get_value($id, $module = null, $user = null, $default_value=null, $use_cache = true) {
-		if($use_cache&&isset(self::$core_config[$module?:"core"][$user?:0][$id])){
-			return self::$core_config[$module?:"core"][$user?:0][$id];
+	public static function get_value($id, $module = null, $user = null, $default_value = null, $use_cache = true) {
+		if ($use_cache && isset(self::$core_config[$module ?: "core"][$user ?: 0][$id])) {
+			return self::$core_config[$module ?: "core"][$user ?: 0][$id];
 		}
-		$where1 = "`module`".($module?"='".escape_sql($module)."'":" IS NULL");
-		$where2 = "`user`".($user?"='".escape_sql($user)."'":" IS NULL");
+		$where1 = "`module`" . ($module ? "='" . escape_sql($module) . "'" : " IS NULL");
+		$where2 = "`user`" . ($user ? "='" . escape_sql($user) . "'" : " IS NULL");
 		$data = Database::select_single("
-				SELECT `value` FROM core_config WHERE `key`='".escape_sql($id)."' AND $where1 AND $where2;
+				SELECT `value` FROM core_config WHERE `key`='" . escape_sql($id) . "' AND $where1 AND $where2;
 			");
-		if(empty($data)){
+		if (empty($data)) {
 			return $default_value;
 		}
 		$value = $data["value"];
-		if($use_cache)self::$core_config["core"][0][$id] = $value;
+		if ($use_cache) self::$core_config["core"][0][$id] = $value;
 		return $value;
 	}
 
-	public static function set_core_value($id, $value, $user=null) {
+	public static function set_core_value($id, $value, $user = null) {
 		self::set_value($id, $value, null, $user);
 	}
 
-	public static function set_value($id, $value, $module=null, $user=null) {
+	public static function set_value($id, $value, $module = null, $user = null) {
 		$where = array(
-			"key"=>$id,
-			"module"=>$module=="core"?null:$module,
-			"user"=>$user
+			"key" => $id,
+			"module" => $module == "core" ? null : $module,
+			"user" => $user
 		);
-		Database::update_or_insert("core_config", $where, array("value"=>$value));
+		Database::update_or_insert("core_config", $where, array("value" => $value));
 	}
 
 }

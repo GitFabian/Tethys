@@ -5,7 +5,9 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 namespace core;
+
 use inst\Install;
 
 /**
@@ -100,16 +102,16 @@ class Database {
 		$this->error_code = $code ?: $error;
 	}
 
-	public static function get_error_msg(){
+	public static function get_error_msg() {
 		return self::$main->error_msg;
 	}
 
-	public static function get_error_code(){
+	public static function get_error_code() {
 		return self::$main->error_code;
 	}
 
-	public static function doexecute($query){
-		return self::$main->iquery($query,null);
+	public static function doexecute($query) {
+		return self::$main->iquery($query, null);
 	}
 
 	private function reset_error() {
@@ -199,7 +201,7 @@ class Database {
 	 */
 	public static function select_single($query) {
 		$response = self::select($query);
-		if(!empty($response)){
+		if (!empty($response)) {
 			return $response[0];
 		}
 		return false;
@@ -215,7 +217,7 @@ class Database {
 	 */
 	public static function select_single_col($query, $column_title, $default_value) {
 		$response = self::select_single($query);
-		if(!empty($response)){
+		if (!empty($response)) {
 			return $response[$column_title];
 		}
 		return $default_value;
@@ -234,7 +236,7 @@ class Database {
 		//Build the WHERE statement:
 		$where_sql = array();
 		foreach ($data_where as $key => $value) {
-			$val_sql = $value===null?"IS NULL":("= '" . escape_sql($value) . "'");
+			$val_sql = $value === null ? "IS NULL" : ("= '" . escape_sql($value) . "'");
 			$where_sql[] = "`$key` $val_sql";
 		}
 		$where = implode(" AND ", $where_sql);
@@ -244,24 +246,24 @@ class Database {
 		$data = self::select($query1);
 		$anzahl_treffer = $data[0]["c"];
 
-		if($anzahl_treffer){
+		if ($anzahl_treffer) {
 			//Data already exists: UPDATE
 			$set_sql = array();
 			foreach ($data_set as $key => $value) {
-				$val_sql = $value===null?"NULL":("'" . escape_sql($value) . "'");
+				$val_sql = $value === null ? "NULL" : ("'" . escape_sql($value) . "'");
 				$set_sql[] = "`$key` = $val_sql";
 			}
 			$set = implode(", ", $set_sql);
 			$query2 = "UPDATE $tabelle SET $set WHERE $where;";
 			self::update($query2);
-		}else{
+		} else {
 			//Data didn't exist: INSERT
 			$keys_sql = array();
 			$values_sql = array();
 			$data_alltogehter = array_merge($data_where, $data_set);
 			foreach ($data_alltogehter as $key => $value) {
 				$keys_sql[] = "`$key`";
-				$values_sql[] = ($value===null?"NULL":("'" . escape_sql($value) . "'"));
+				$values_sql[] = ($value === null ? "NULL" : ("'" . escape_sql($value) . "'"));
 			}
 			$keys = implode(", ", $keys_sql);
 			$values = implode(", ", $values_sql);

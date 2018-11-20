@@ -5,6 +5,7 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 namespace core;
 /**
  * Class Errors
@@ -34,7 +35,7 @@ class Errors {
 	}
 
 	public static function die_hard($message, $level = 0) {
-		echo $message." ".self::get_stacktrace($level+1);
+		echo $message . " " . self::get_stacktrace($level + 1);
 		exit;
 	}
 

@@ -5,6 +5,7 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 /**
  * require_once ROOT_HDD_CORE . "/inst/core/UpdateDB.php";
  */
@@ -24,27 +25,27 @@ class UpdateDB extends UpdaterDB {
 	 */
 	protected function do_update() {
 
-		$this->q("1","
+		$this->q("1", "
 			CREATE TABLE `core_config` (
-			  `id` int(11) NOT NULL AUTO_INCREMENT,
-			  `key` varchar(20) COLLATE utf8_bin NOT NULL,
-			  `module` varchar(20) COLLATE utf8_bin DEFAULT NULL,
-			  `user` int(11) DEFAULT NULL,
-			  `value` text COLLATE utf8_bin NOT NULL,
+			  `id` INT(11) NOT NULL AUTO_INCREMENT,
+			  `key` VARCHAR(20) COLLATE utf8_bin NOT NULL,
+			  `module` VARCHAR(20) COLLATE utf8_bin DEFAULT NULL,
+			  `user` INT(11) DEFAULT NULL,
+			  `value` TEXT COLLATE utf8_bin NOT NULL,
 			  PRIMARY KEY (`id`),
 			  KEY `user` (`user`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 		");
 
 		//Insert first config values
-		$this->q("2","
+		$this->q("2", "
 			INSERT INTO `core_config` (`key`, `module`, `user`, `value`) VALUES
 			('INDEX_TITLE', NULL, NULL, 'MyTethys'),
 			('SKIN', NULL, NULL, 'demo_synergy');
 		");
 
 		//
-//		$this->q("","
+//		$this->q("", "
 //		");
 
 		/*

@@ -20,4 +20,4 @@ define('TETHYSDB', ':db_name');
 //Creation of the main database connection:
 \core\Database::set_main_connection(new \core\Database(":server_addr", TETHYSDB, ":username", ":dbpass"));
 
-define("ROOT_HTTP_CORE", ':ROOT_HTTP_CORE' );
+define("ROOT_HTTP_CORE", ':ROOT_HTTP_CORE');
