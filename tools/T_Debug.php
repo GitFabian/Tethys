@@ -9,6 +9,7 @@
  * Debugging-Toolbox
 require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
  */
+namespace tools;
 
 class T_Debug {
 
