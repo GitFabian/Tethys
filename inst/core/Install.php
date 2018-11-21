@@ -58,7 +58,7 @@ class Install {
 	 */
 	public static function create_config_link($message) {
 		$page = self::initialize_install("installer_config_link");
-		include_once(ROOT_HDD_CORE . '/classes/Form.php');
+		include_once(ROOT_HDD_CORE . '/core/Form.php');
 
 		if (request_cmd("cmd_save_cfglink")) self::save_config_link($page, request_value("cfglink"));
 
@@ -69,7 +69,7 @@ class Install {
 		$form = new Form("", "Speichern", "cmd_save_cfglink");
 		$form->add_field(new Formfield_text("cfglink", "Konfigurationsdatei", $cfgfile_proposal));
 
-		$page->addDiv("Bitte geben Sie den Pfad zur Konfigurationsdatei an:");
+		$page->addHtmlDiv("Bitte geben Sie den Pfad zur Konfigurationsdatei an:");
 		$page->addHtml($form);
 
 		$page->send_and_quit();
@@ -209,7 +209,7 @@ class Install {
 		}
 
 		//Eingabe von Benutzername und Passwort:
-		include_once(ROOT_HDD_CORE . '/classes/Form.php');
+		include_once(ROOT_HDD_CORE . '/core/Form.php');
 		$form = new Form("", "Absenden", "dodbinit");
 		$form->add_field(new Formfield_text("server_addr", "Server", "localhost"));
 		$form->add_field(new Formfield_text("username", "Username", "root"));

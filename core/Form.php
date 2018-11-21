@@ -8,6 +8,8 @@
 
 /**
  * This file contains classes Form, Formfield and children (different types) of Formfield.
+ *
+ * include_once(ROOT_HDD_CORE.'/core/Form.php');
  */
 
 namespace core;
@@ -16,7 +18,6 @@ namespace core;
  * Class Form
  * ==========
  * Example of creating a form in Tethys:
- *     include_once(ROOT_HDD_CORE.'/classes/Form.php');
  *     $form = new Form("", "Speichern", "cmd_save_cfglink");
  *     $form->add_field(new Formfield_text("cfglink", "Konfigurationsdatei", $cfgfile_proposal));
  *     $page->addHtml($form);

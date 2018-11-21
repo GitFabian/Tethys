@@ -6,6 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+//Root directory is where the Start.php is:
+define("ROOT_HDD_CORE", __DIR__);
+
 /**
  * Class Start
  * Holds the static function init, which loads the Tethys framework.
@@ -20,9 +23,6 @@
 class Start {
 
 	public static function init($pageId, $page_title) {
-
-		//Root directory is where the Start.php is:
-		define("ROOT_HDD_CORE", __DIR__);
 
 		//Global toolbox:
 		require_once ROOT_HDD_CORE . "/tools/basic.php";
