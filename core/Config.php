@@ -73,8 +73,10 @@ class Config {
 	 */
 	private static function load_db_basic() {
 		$data = Database::select("SELECT `key`,`value` FROM core_config WHERE `key` IN (
-'INDEX_TITLE',
-'SKIN');");
+				'INDEX_TITLE',
+				'SKIN',
+				'EXTENSION'
+			  );");
 		if ($data === false) {
 			$error_code = Database::get_error_code();
 			if ($error_code == "42S02"/*Table 'TETHYSDB.core_config' doesn't exist*/) {
@@ -87,6 +89,8 @@ class Config {
 		foreach ($data as $row) {
 			self::$core_config["core"][0][$row["key"]] = $row["value"];
 		}
+
+		define("EXTENSION", self::$core_config["core"][0]["EXTENSION"]);
 
 		//SKIN_HTTP:
 		$skinname = self::$core_config["core"][0]["SKIN"];

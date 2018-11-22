@@ -45,7 +45,8 @@ class UpdateDB extends UpdaterDB {
 		$this->q("2", "
 			INSERT INTO `core_config` (`key`, `module`, `user`, `value`) VALUES
 			('INDEX_TITLE', NULL, NULL, 'MyTethys'),
-			('SKIN', NULL, NULL, 'demo_synergy');
+			('SKIN', NULL, NULL, 'demo_synergy'),
+			('EXTENSION', NULL, NULL, 'php');
 		");
 
 		//
