@@ -32,7 +32,8 @@ class Page {
 
 	/**
 	 * Page constructor.
-	 * There can be only one page, stored in the static $global_page. To change the current page use @see Page::reset.
+	 * There can be only one page, stored in the static $global_page. To change the current page use Page::reset.
+	 * @see Page::reset
 	 * @param string $id
 	 * @param string $title
 	 */
@@ -49,21 +50,23 @@ class Page {
 	}
 
 	/**
-	 * Kind of a constructor.
+	 * Singleton self::$global_page is set here. This function is called by the class Start.
+	 * @see Start
 	 * @param string $pageId
 	 * @param string $page_title
 	 */
 	public static function init($pageId, $page_title) {
 		if (self::$global_page === null) {
-			self::$global_page = new page($pageId, $page_title);
+			self::$global_page = new Page($pageId, $page_title);
 		} else {
 			self::$global_page->exit_with_error("Invalid page initialization! Please call reset instead!");
 		}
 	}
 
 	/**
-	 * A page usually calls @see Page::init in the very beginning. Some core features like installation or login
+	 * A page usually calls Page::init in the very beginning. Some core features like installation or login
 	 * are called later but "overwrite" the requested page. This function updates the pageId and title.
+	 * @see Page::init
 	 * @param string $pageId
 	 * @param string $title
 	 * @return Page

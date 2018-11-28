@@ -5,17 +5,30 @@
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
+
 /**
- * Created.
- * Date: 21.11.2018
+ * Demonstration of all available formfields.
  */
+
+use core\Formfield_password;
+use core\Formfield_select;
+use core\Formfield_text;
+
 require_once '../../tethys/Start.php';
 $page = Start::init("demo_forms", "Forms");
-include_once(ROOT_HDD_CORE.'/core/Form.php');
+include_once(ROOT_HDD_CORE . '/core/Form.php');
 
 $form = new \core\Form();
 
-$form->add_field(new \core\Formfield_text("text"));
+$form->add_field(new Formfield_text("text"));
+
+$form->add_field(new Formfield_password("password"));
+
+$select_values = array(
+	"one" => "Eins",
+	"two" => "Zwei",
+);
+$form->add_field(new Formfield_select("select", null, $select_values));
 
 $page->addHtml($form);
 

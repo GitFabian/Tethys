@@ -10,11 +10,11 @@
 define("ROOT_HDD_CORE", __DIR__);
 
 /**
- * Class Start
- * Holds the static function init, which loads the Tethys framework.
+ * Class Start<br>
+ * Holds the static function init, which loads the Tethys framework.<br>
  * Code example:
  * <code>
- * require_once 'Start.php';
+ * require_once '../../tethys/Start.php';
  * $page = Start::init("pageId", "Page title");
  * $page->addHtml("Hello World");
  * $page->send_and_quit();
