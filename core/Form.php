@@ -90,6 +90,9 @@ class Formfield {
 	protected $name;
 	protected $value;
 	public $id = null;
+	/**
+	 * @var array All params except "name", "value" and "id".
+	 */
 	public $more_params = array();
 
 	//Label:
@@ -159,9 +162,15 @@ class Formfield {
 	protected function getParams_inner($value = true) {
 		$params = $this->more_params;
 
-		if ($this->name) $params["name"] = $this->name;
-		if ($value) if ($this->value) $params["value"] = $this->value;
-		if ($this->id) $params["id"] = $this->id;
+		if ($this->name){
+			$params["name"] = $this->name;
+		}
+		if ($value){
+			if ($this->value) $params["value"] = $this->value;
+		}
+		if ($this->id){
+			$params["id"] = $this->id;
+		}
 
 		return html_tag_keyValues($params);
 	}
@@ -204,6 +213,18 @@ class Formfield_text extends Formfield {
 
 	public function inner_html() {
 		return "<input type='text'" . $this->getParams_inner() . " />";
+	}
+
+}
+
+/**
+ * Class Formfield_textarea
+ * A multi-line text input field.
+ */
+class Formfield_textarea extends Formfield {
+
+	public function inner_html() {
+		return "<textarea" . $this->getParams_inner(false) . ">".htmlentities($this->value)."</textarea>";
 	}
 
 }

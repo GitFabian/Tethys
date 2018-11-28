@@ -10,19 +10,23 @@
  * Demonstration of all available formfields.
  */
 
+use core\Form;
 use core\Formfield_password;
 use core\Formfield_select;
 use core\Formfield_text;
+use core\Formfield_textarea;
 
 require_once '../../tethys/Start.php';
 $page = Start::init("demo_forms", "Forms");
 include_once(ROOT_HDD_CORE . '/core/Form.php');
 
-$form = new \core\Form();
+$form = new Form();
 
 $form->add_field(new Formfield_text("text"));
 
-$form->add_field(new Formfield_password("password"));
+$form->add_field(new Formfield_password("password","A long long long long long long long long long long long long long long label"));
+
+$form->add_field(new Formfield_textarea("text"));
 
 $select_values = array(
 	"one" => "Eins",

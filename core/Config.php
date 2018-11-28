@@ -95,7 +95,7 @@ class Config {
 		//SKIN_HTTP:
 		$skinname = self::$core_config["core"][0]["SKIN"];
 		if (substr($skinname, 0, 5) == "demo_") {
-			define("SKIN_HTTP", ROOT_HTTP_CORE . "/demo/skins/$skinname");
+			define("SKIN_HTTP", ROOT_HTTP_CORE . "/demo/skins/".substr($skinname,5));
 		} else {
 			define("SKIN_HTTP", ""/*(Konstante für Skin-Verzeichnis noch nicht definiert) (TODO)*/);
 		}
