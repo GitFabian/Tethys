@@ -5,9 +5,17 @@ form div.form_field label{
 	display:inline-block;
 	vertical-align:top;
 	width:200px;
+	text-align:right;
+	margin-right:5px;
 }
+
 form div.form_field label + input,
 form div.form_field label + select,
 form div.form_field label + textarea{
+	width:400px;
 	vertical-align:bottom;
+}
+
+form div.buttons{
+	margin-left:205px;
 }

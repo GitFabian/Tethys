@@ -13,6 +13,7 @@
  */
 
 namespace core;
+require_once ROOT_HDD_CORE."/core/Html.php";
 /**
  *
  * Class Form
@@ -73,7 +74,9 @@ class Form {
 	}
 
 	public function toHtml() {
-		$buttons = implode("\n", $this->buttons);
+		$buttons = new Html("div",implode("\n", $this->buttons),array(
+			"class"=>"buttons"
+		));
 		$fields_html = implode("\n", $this->fields);
 		return "<form action=\"$this->action\" method='$this->method'>\n$fields_html\n$buttons\n</form>";
 	}
@@ -84,7 +87,7 @@ class Form {
  * Class Formfield
  * Generic class representing all formfields.
  */
-class Formfield {
+abstract class Formfield {
 
 	//Formfield:
 	protected $name;
@@ -127,9 +130,7 @@ class Formfield {
 	 * Generic function is overwritten with the respective HTML by the children.
 	 * @return string
 	 */
-	protected function inner_html() {
-		return "UNSPECIFIED FORMTYPE";
-	}
+	abstract protected function inner_html();
 
 	public function __toString() {
 		return $this->toHtml();
@@ -203,6 +204,12 @@ class Formfield_hidden extends Formfield {
 		return "<input type='hidden'" . $this->getParams_inner() . " />";
 	}
 
+	/**
+	 * Not in use.
+	 */
+	protected function inner_html() {
+		return "NOT IN USE";
+	}
 }
 
 /**

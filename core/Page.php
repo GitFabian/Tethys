@@ -91,7 +91,7 @@ class Page {
 	 * @param array  $params
 	 */
 	public function addHtmlDiv($html, $params = array()) {
-		$this->inner_body .= "<div " . html_tag_keyValues($params) . ">$html</div>";
+		$this->inner_body .= new Html("div",$html,$params);
 	}
 
 	/**

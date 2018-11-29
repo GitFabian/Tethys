@@ -24,9 +24,9 @@ $form = new Form();
 
 $form->add_field(new Formfield_text("text"));
 
-$form->add_field(new Formfield_password("password","A long long long long long long long long long long long long long long label"));
+$form->add_field(new Formfield_password("password"));
 
-$form->add_field(new Formfield_textarea("text"));
+$form->add_field(new Formfield_textarea("textarea"));
 
 $select_values = array(
 	"one" => "Eins",

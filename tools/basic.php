@@ -6,6 +6,9 @@
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
 
+require_once ROOT_HDD_CORE . "/tools/T_Strings.php";
+require_once ROOT_HDD_CORE . "/tools/T_Html.php";
+
 /*
  * Basic toolbox
  * TODO: In Klassen überführen
@@ -32,21 +35,10 @@ function request_cmd($cmd) {
 }
 
 /**
- * Escapes quotes with htmlentities.
- * Escapes single quotes, double quotes and the ampersand.
- * Examples:
- *      "<tag value = '".escape_value_html($value)."' />"
- *      "<tag value = \"".escape_value_html($value)."\" />"
- *      '<tag value = "'.escape_value_html($value).'" />'
- * @param string $value
- * @return string
+ * @deprecated
  */
 function escape_value_html($value) {
-	return str_replace_byArray(array(
-		"&" => "&amp;",
-		"\"" => "&quot;",
-		"'" => "&apos;",
-	), $value);
+	return \tools\T_Strings::escape_value_html($value);
 }
 
 /**
@@ -73,27 +65,17 @@ function escape_sql($string) {
 }
 
 /**
- * Other syntax for the str_replace function.
- * @param array  $substitutions An associative array containing the substitutions.
- * @param string $string
- * @return mixed
+ * @deprecated
  */
 function str_replace_byArray($substitutions, $string) {
-	return str_replace(array_keys($substitutions), array_values($substitutions), $string);
+	return \tools\T_Strings::replace_byArray($substitutions, $string);
 }
 
 /**
- * Creates key-value pairs as used by HTML tags.
- * @param array $params
- * @return string
+ * @deprecated
  */
 function html_tag_keyValues($params) {
-	$html = "";
-	foreach ($params as $key => $value) {
-		$html .= " $key='" . escape_value_html($value) . "'";
-	}
-	return $html;
-
+	return \tools\T_Html::tag_keyValues($params);
 }
 
 /**
