@@ -78,11 +78,19 @@ class Page {
 	}
 
 	/**
-	 * The "echo" function.
-	 * @param string $html
+	 * @deprecated Use "add" instead.
 	 */
 	public function addHtml($html) {
 		$this->inner_body .= $html;
+	}
+
+	/**
+	 * Echo HTML to the page body.
+	 * TODO:Add Message
+	 * @param string|Html $anything
+	 */
+	public function add($anything) {
+		$this->inner_body .= $anything;
 	}
 
 	/**

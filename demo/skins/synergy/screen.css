@@ -19,3 +19,12 @@ form div.form_field label + textarea{
 form div.buttons{
 	margin-left:205px;
 }
+
+/*========================== Links ======================*/
+
+a.abutton{
+	border:1px solid black;
+	border-radius: 4px;
+	padding:0 3px;
+	text-decoration: none;
+}

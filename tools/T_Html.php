@@ -21,6 +21,9 @@ class T_Html {
 	 * @return string
 	 */
 	public static function tag_keyValues($params) {
+		if(!is_array($params)){
+			return "";
+		}
 		$html = "";
 		foreach ($params as $key => $value) {
 			$html .= " $key='" . escape_value_html($value) . "'";

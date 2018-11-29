@@ -35,7 +35,7 @@ function request_cmd($cmd) {
 }
 
 /**
- * @deprecated
+ * @deprecated Use \tools\T_Strings::escape_value_html instead.
  */
 function escape_value_html($value) {
 	return \tools\T_Strings::escape_value_html($value);
@@ -79,60 +79,23 @@ function html_tag_keyValues($params) {
 }
 
 /**
- * HTML-code for a link with the class "abutton".
- * @param string $link
- * @param string $label
- * @return string HTML
+ * @deprecated
  */
 function html_a_button($link, $label) {
-	return "<a href='" . escape_value_html($link) . "' class='abutton'>$label</a>";
+	$obj = new \core\Html_a_button($label, $link);
+	return $obj->__toString();
 }
 
 /**
- * Loads a template file, fills in the values and returns the content as a string.
- * Comments marked as follows will be removed:
- * &#47;&#42;&#42;TPLDOCSTART This comment will be removed TPLDOCEND&#42;&#47;
- * @param string $file
- * @param array  $replacements
- * @return string
+ * @deprecated
  */
 function template_load($file, $replacements) {
-	if (!file_exists($file)) {
-		\core\Page::get_global_page()->exit_with_error("Template-Datei nicht gefunden!");
-	}
-
-	//Read template file:
-	$content = file_get_contents($file);
-
-	if ($content === false) {
-		\core\Page::get_global_page()->exit_with_error("Template-Datei konnte nicht geladen werden!");
-	}
-
-	//Replacements:
-	$content = str_replace_byArray($replacements, $content);
-
-	//Remove TPLDOC:
-	/** Explanation of the RegEx: http://gitfabian.github.io/Tethys/php/regex.html */
-	$content = preg_replace("/\\/\\*\\*TPLDOCSTART.*?TPLDOCEND\\*\\/\\R?/s", "", $content);
-
-	return $content;
+	return \tools\T_Templates::load($file, $replacements);
 }
 
 /**
- * Saves a string to a file.
- * @param string $file
- * @param string $content
- * @param bool   $append
+ * @deprecated
  */
 function file_save($file, $content, $append = false) {
-	/** Explanation of the file params: http://gitfabian.github.io/Tethys/php/files.html */
-	$file = fopen($file, $append ? "a" : "w");
-	$success = false;
-	if ($file !== false) {
-		$success = fwrite($file, $content);
-		fclose($file);
-	}
-	if ($success === false) {
-		\core\Page::get_global_page()->exit_with_error("Speichern der Datei \"$file\" fehlgeschlagen!");
-	}
+	\tools\T_Files::save($file, $content, $append);
 }
