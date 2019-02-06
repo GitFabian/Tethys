@@ -21,3 +21,7 @@ define('TETHYSDB', ':db_name');
 \core\Database::set_main_connection(new \core\Database(":server_addr", TETHYSDB, ":username", ":dbpass"));
 
 define("ROOT_HTTP_CORE", ':ROOT_HTTP_CORE');
+
+define("ROOT_HTTP_MODULES", ':ROOT_HTTP_MODULES');
+
+define("ROOT_HDD_MODULES", ':ROOT_HDD_MODULES');

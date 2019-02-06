@@ -16,7 +16,7 @@ define("ROOT_HDD_CORE", __DIR__);
  * <code>
  * require_once '../../tethys/Start.php';
  * $page = Start::init("pageId", "Page title");
- * $page->addHtml("Hello World");
+ * $page->add("Hello World");
  * $page->send_and_quit();
  * </code>
  */

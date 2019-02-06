@@ -1,15 +1,21 @@
 <!DOCTYPE html><html><head><meta charset="UTF-8"><title>Tethys:Help</title><link rel="stylesheet" type="text/css" href="help.css"></head><body>
 <div class="nav">Tethys documentation<ul><li><a href="index.html">Index</a></li></ul></div>
 <h1>Apache configuration</h1>
-<b class="note">Note that <a href="globals.html#ROOT_HTTP_CORE">ROOT_HTTP_CORE</a> starts with a "/"!</b>
-<b class="note">(Windows) Note that path-seperators have to be "/" in <a href="globals.html#ROOT_HDD_CORE">ROOT_HDD_CORE</a>!</b>
+<b class="note">Note that <a href="globals.html#ROOT_HTTP_CORE">ROOT_HTTP_CORE</a> and <a href="globals.html#ROOT_HTTP_MODULES">ROOT_HTTP_MODULES</a> starts with a "/"!</b>
+<b class="note">(Windows) Note that path-seperators have to be "/" in <a href="globals.html#ROOT_HDD_CORE">ROOT_HDD_CORE</a> and <a href="globals.html#ROOT_HDD_MODULES">ROOT_HDD_MODULES</a>!</b>
 
 <h2>Module activation</h2>
 <code>LoadModule alias_module modules/mod_alias.so</code>
 <code>LoadModule rewrite_module modules/mod_rewrite.so</code>
 
 <h2>Alias</h2>
-<p class="code">Alias ROOT_HTTP_CORE/ "ROOT_HDD_CORE/"<br>
+<p class="code">Alias ROOT_HTTP_MODULES/ "ROOT_HDD_MODULES/"<br>
+&lt;Directory "ROOT_HDD_MODULES"><br>
+	&nbsp;&nbsp;&nbsp;&nbsp;Allow from all<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride All<br>
+&lt;/Directory><br>
+<br>
+Alias ROOT_HTTP_CORE/ "ROOT_HDD_CORE/"<br>
 &lt;Directory "ROOT_HDD_CORE"><br>
 	&nbsp;&nbsp;&nbsp;&nbsp;Allow from all<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride All<br>
@@ -19,6 +25,7 @@
 <code>RewriteEngine on</code>
 
 <h3 id="rewrite_ext">Rewrite for individual extension</h3>
+<code>RewriteRule ^ROOT_HTTP_MODULES/(.*)\.EXTENSION$ "ROOT_HDD_MODULES/$1.php"</code>
 <code>RewriteRule ^ROOT_HTTP_CORE/(.*)\.EXTENSION$ "ROOT_HDD_CORE/$1.php"</code>
 
 <!-- ><h3>Rewrite for mapped downloads</h3>

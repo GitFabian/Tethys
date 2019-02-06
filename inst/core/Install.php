@@ -13,11 +13,16 @@ use core\Form;
 use core\Formfield_password;
 use core\Formfield_select;
 use core\Formfield_text;
+use core\Html_a_button;
 use core\Page;
 use core\UpdateDB;
+use tools\T_Files;
+use tools\T_Templates;
 
 require_once ROOT_HDD_CORE . "/inst/core/UpdateDB.php";
 require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
+require_once ROOT_HDD_CORE . "/tools/T_Templates.php";
+require_once ROOT_HDD_CORE . "/tools/T_Files.php";
 
 /**
  * Installation of Tethys
@@ -146,11 +151,16 @@ class Install {
 
 		$form->add_field(new Formfield_password("dbpass", "Passwort"));
 
-		$http_root = $_SERVER["SCRIPT_URL"];
-		$http_root = preg_replace("/\\/$/", "", $http_root);
+		$http_root = dirname($_SERVER["SCRIPT_URL"]);
 		$form->add_field(new Formfield_text("ROOT_HTTP_CORE", "HTTP-Root", $http_root));
 
-		$page->addHtml($form);
+		$form->add_field(new Formfield_text("ROOT_HTTP_MODULES", "Modules (HTTP)", $http_root."/m"));
+
+		$hdd_modules = dirname(dirname(dirname(__DIR__/*core*/)/*inst*/)/*tethys*/)/*myproject*/."/modules";
+		$hdd_modules = str_replace("\\", "/", $hdd_modules);
+		$form->add_field(new Formfield_text("ROOT_HDD_MODULES", "Modules (HDD)", $hdd_modules));
+
+		$page->add($form);
 
 		$page->send_and_quit();
 	}
@@ -166,19 +176,21 @@ class Install {
 		}
 
 		//Load template
-		$template = template_load(ROOT_HDD_CORE . "/inst/core/tpl_config.php", array(
+		$template = T_Templates::load(ROOT_HDD_CORE . "/inst/core/tpl_config.php", array(
 			":db_type" => escape_value_bs(request_value("db_type")),
 			":server_addr" => escape_value_bs(request_value("server_addr")),
 			":db_name" => escape_value_bs(request_value("db_name")),
 			":username" => escape_value_bs(request_value("username")),
 			":dbpass" => escape_value_bs(request_value("dbpass")),
 			":ROOT_HTTP_CORE" => escape_value_bs(request_value("ROOT_HTTP_CORE")),
+			":ROOT_HTTP_MODULES" => escape_value_bs(request_value("ROOT_HTTP_MODULES")),
+			":ROOT_HDD_MODULES" => escape_value_bs(request_value("ROOT_HDD_MODULES")),
 		));
 
-		file_save(TCFGFILE, $template);
+		T_Files::save(TCFGFILE, $template);
 
 		$page->addMessageConfirm("Konfigurationsdatei erfolgreich gespeichert.");
-		$page->addHtml(html_a_button($_SERVER['SCRIPT_NAME'], "Weiter"));
+		$page->add(new Html_a_button("Weiter", $_SERVER['SCRIPT_NAME']));
 		$page->send_and_quit();
 	}
 

@@ -12,4 +12,6 @@ $page->reset("core_index", \core\Config::get_core_value("INDEX_TITLE"));
 #\core\Database::delete("DROP TABLE core_config;");
 #$page->addHtml("Dropped table core_config.");
 
+$page->add("Hello World.");
+
 $page->send_and_quit();
