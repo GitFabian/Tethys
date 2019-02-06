@@ -43,14 +43,15 @@ function escape_value_html($value) {
 
 /**
  * Escapes quotes with a backslash.
- * Escapes single quotes, double quotes and the backslash itself.
+ * Escapes single quotes, double quotes, backticks and the backslash itself.
  * @param string $string
  * @return string
  */
 function escape_value_bs($string) {
-	return str_replace_byArray(array(
+	return \tools\T_Strings::replace_byArray(array(
 		"\\" => "\\\\",
 		"'" => "\\'",
+		"`" => "\\`",
 		"\"" => "\\\"",
 	), $string);
 }
