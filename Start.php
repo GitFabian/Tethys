@@ -24,6 +24,9 @@ class Start {
 
 	public static function init($pageId, $page_title) {
 
+		require_once ROOT_HDD_CORE . "/core/Errors.php";
+		require_once ROOT_HDD_CORE . "/tools/T_Debug.php";
+
 		//Global toolbox:
 		require_once ROOT_HDD_CORE . "/tools/basic.php";
 
@@ -35,6 +38,13 @@ class Start {
 		require_once ROOT_HDD_CORE . "/core/Database.php";
 		require_once ROOT_HDD_CORE . "/core/Config.php";
 		\core\Config::load_config($pageId);
+
+		//Handle core commands:
+		$cmd = request_value("cmd");
+		if($cmd){
+			require_once ROOT_HDD_CORE . "/core/Commands.php";
+			\core\Commands::handle($cmd);
+		}
 
 		return \core\Page::get_global_page();
 	}

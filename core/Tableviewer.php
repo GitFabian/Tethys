@@ -44,7 +44,7 @@ class Tableviewer {
 		$data = \core\Database::select("SELECT * FROM $table_escaped LIMIT 999;");
 
 		$this->table = new Table($data);
-		$this->table->setOptions($this->module_name, $this->table_name, true);
+		$this->table->setOptions($this->module_name, $this->table_name, true, true, true);
 
 		return $this->table;
 	}
