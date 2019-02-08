@@ -39,20 +39,39 @@ class Database {
 
 	/** @var Database */
 	private static $main = null;
+	private static $db_INFORMATION_SCHEMA = null;
 
 	/** @var \PDO */
 	private $pdo;
-	private $error_msg;
-	private $error_code;
+	/**
+	 * @var int|false
+	 * if(Database::get_error_code()===false){}
+	 */
+	private $error_code = false;
+	private $error_msg = "";
+
+	private $host;
+	private $user;
+	private $password;
 
 	public function __construct($host, $dbname, $user, $password, $exit_on_error = true) {
 		$this->reset_error();
+		$this->host = $host;
+		$this->user = $user;
+		$this->password = $password;
 		try {
 			$this->pdo = new \PDO("mysql:host=" . $host . ";dbname=" . $dbname, $user, $password);
 			$this->pdo->query('SET NAMES utf8');
 		} catch (\Exception $e) {
 			$this->fehler_beim_pdo_erstellen($e, $exit_on_error);
 		}
+	}
+
+	public static function get_db_INFORMATION_SCHEMA(){
+		if(self::$db_INFORMATION_SCHEMA===null){
+			self::$db_INFORMATION_SCHEMA = new Database(self::$main->host, "INFORMATION_SCHEMA", self::$main->user, self::$main->password);
+		}
+		return self::$db_INFORMATION_SCHEMA;
 	}
 
 	/**
@@ -229,9 +248,10 @@ class Database {
 	 * @param string $tabelle
 	 * @param array  $data_where
 	 * @param array  $data_set
+	 * @return int|string|false Number of modified rows or ID of the inserted data or false in case of any failure
 	 */
 	public static function update_or_insert($tabelle, $data_where, $data_set) {
-		if (empty($data_where) && empty($data_set)) return;
+		if (empty($data_where) && empty($data_set)) return false;
 
 		//Build the WHERE statement:
 		$where_sql = array();
@@ -248,28 +268,77 @@ class Database {
 
 		if ($anzahl_treffer) {
 			//Data already exists: UPDATE
-			$set_sql = array();
-			foreach ($data_set as $key => $value) {
-				$val_sql = $value === null ? "NULL" : ("'" . escape_sql($value) . "'");
-				$set_sql[] = "`$key` = $val_sql";
-			}
-			$set = implode(", ", $set_sql);
-			$query2 = "UPDATE $tabelle SET $set WHERE $where;";
-			self::update($query2);
+			return self::update_assoc($tabelle, $where, $data_set);
 		} else {
 			//Data didn't exist: INSERT
-			$keys_sql = array();
-			$values_sql = array();
 			$data_alltogehter = array_merge($data_where, $data_set);
-			foreach ($data_alltogehter as $key => $value) {
-				$keys_sql[] = "`$key`";
-				$values_sql[] = ($value === null ? "NULL" : ("'" . escape_sql($value) . "'"));
-			}
-			$keys = implode(", ", $keys_sql);
-			$values = implode(", ", $values_sql);
-			$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
-			self::insert($query2);
+			return self::insert_assoc($tabelle, $data_alltogehter);
 		}
+	}
+
+	public static function insert_assoc($tabelle, $data_set) {
+		$keys_sql = array();
+		$values_sql = array();
+		foreach ($data_set as $key => $value) {
+			$keys_sql[] = "`$key`";
+			$values_sql[] = ($value === null ? "NULL" : ("'" . escape_sql($value) . "'"));
+		}
+		$keys = implode(", ", $keys_sql);
+		$values = implode(", ", $values_sql);
+		$query2 = "INSERT INTO $tabelle ($keys) VALUES ($values);";
+		return self::insert($query2);
+	}
+
+	public static function update_assoc($tabelle, $where, $data_set) {
+		$set_sql = array();
+		foreach ($data_set as $key => $value) {
+			$val_sql = $value === null ? "NULL" : ("'" . escape_sql($value) . "'");
+			$set_sql[] = "`$key` = $val_sql";
+		}
+		$set = implode(", ", $set_sql);
+		$query2 = "UPDATE $tabelle SET $set WHERE $where;";
+		return self::update($query2);
+	}
+
+	public static function dbio_information_schema_constraints($table){
+
+		$db_INFORMATION_SCHEMA = self::get_db_INFORMATION_SCHEMA();
+
+		$query = "-- 
+		select COLUMN_NAME,REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME
+			from KEY_COLUMN_USAGE
+			where TABLE_SCHEMA = '".TETHYSDB."'
+				and TABLE_NAME = '$table'
+				and referenced_column_name is not NULL;";
+
+		$infos = $db_INFORMATION_SCHEMA->iquery($query, self::RETURN_ASSOC);
+
+		$list=array();
+		foreach ($infos as $col) {
+			$list[$col['COLUMN_NAME']]=$col;
+		}
+
+		return $list;
+	}
+
+	/**
+	 * <code>
+			$col_info=dbio_info_columns("demo_lorumipsum");
+			echo "id.Type=".$col_info['id']['Type'];
+			echo "id.Null=".$col_info['id']['Null'];
+			echo "id.Key=".$col_info['id']['Key'];
+			echo "id.Default=".$col_info['id']['Default'];
+			echo "id.Extra=".$col_info['id']['Extra'];
+			echo "flubtangle.Type=".$col_info['flubtangle']['Type'];
+	 * </code>
+	 */
+	public static function dbio_info_columns($table) {
+		$columns = self::select("SHOW COLUMNS FROM `$table`");
+		$list = array();
+		foreach ($columns as $col) {
+			$list[$col['Field']] = $col;
+		}
+		return $list;
 	}
 
 }
