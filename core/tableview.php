@@ -21,7 +21,16 @@ if(!$table){
 
 $page->reset($page->get_id(), $table." - Datenansicht");
 
-$tableviewer = new \core\Tableviewer($table);
+$module = request_value("module");
+if(!$module){
+	$module = substr($table, 0, strpos($table, "_"));
+}
+
+if(!$module){
+	$page->exit_with_error("Kein Modul angegeben!");
+}
+
+$tableviewer = new \core\Tableviewer($module, $table);
 
 $page->add($tableviewer);
 

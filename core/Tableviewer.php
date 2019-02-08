@@ -18,13 +18,15 @@ use tools\T_Html;
 
 class Tableviewer {
 
+	private $module_name;
 	private $table_name;
 	/**
 	 * @var Table
 	 */
 	private $table = null;
 
-	public function __construct($table_name) {
+	public function __construct($module_name, $table_name) {
+		$this->module_name = $module_name;
 		$this->table_name = $table_name;
 	}
 
@@ -42,6 +44,7 @@ class Tableviewer {
 		$data = \core\Database::select("SELECT * FROM $table_escaped LIMIT 999;");
 
 		$this->table = new Table($data);
+		$this->table->setOptions($this->module_name, $this->table_name, true);
 
 		return $this->table;
 	}

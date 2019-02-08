@@ -16,9 +16,16 @@ namespace core;
 class Table {
 
 	private $data;
+	public $data_id_key = "id";
 	private $header = null;
 	public $tbl_class = "tethysTable";
 	public $no_data_info = "(Keine Daten)";
+
+	/**
+	 * @var array
+	 * [[ID]] row's primary id
+	 */
+	private $options = array();
 
 	public function __construct($data = null) {
 		$this->setData($data);
@@ -26,6 +33,16 @@ class Table {
 
 	public function setData($data) {
 		$this->data = $data;
+	}
+
+	public function setOptions($module, $table, $edit_link = false, $delete_link = false, $new_link = false){
+
+		if($edit_link){
+
+			$this->options[] = new Html_a_button("Bearbeiten", ROOT_HTTP_CORE."/core/edit.".EXTENSION."?module=".urlencode($module)."&table=".urlencode($table)."&id=[[ID]]");
+
+		}
+
 	}
 
 	public function getHeader() {
@@ -60,29 +77,39 @@ class Table {
 			$header_names[] = $name;
 			$thead[] = "<th>$string</th>";
 		}
+
+		if($this->options){
+			$thead[] = "<th></th>";
+		}
+
 		$thead_html = implode("\n", $thead);
 
 		$tbody = array();
 
 		$this_data_0 = reset($this->data);
-		if (is_array($this_data_0)) {
-			foreach ($this->data as $row) {
-				$trow = array();
+		foreach ($this->data as $row) {
+			$trow = array();
+			if (is_array($this_data_0)) {
 				foreach ($header_names as $name) {
 					$trow[] = "<td>" . (isset($row[$name]) ? $row[$name] : "") . "</td>";
 				}
-				$tbody[] = "<tr>" . implode("", $trow) . "</tr>";
-			}
-		} else if (is_object($this_data_0)) {
-			foreach ($this->data as $row) {
-				$trow = array();
+			} else if (is_object($this_data_0)) {
 				foreach ($header_names as $name) {
 					$trow[] = "<td>" . (isset($row->$name) ? $row->$name : "") . "</td>";
 				}
-				$tbody[] = "<tr>" . implode("", $trow) . "</tr>";
+			} else {
+				Errors::die_hard("Unbekannter Datentyp!");
 			}
-		} else {
-			Errors::die_hard("Unbekannter Datentyp!");
+			if($this->options){
+				$options = "<td>".implode("", $this->options)."</td>";
+
+				if (isset($row[$this->data_id_key])){
+					$options = str_ireplace("[[ID]]", $row[$this->data_id_key], $options);
+				}
+
+				$trow[] = $options;
+			}
+			$tbody[] = "<tr>" . implode("", $trow) . "</tr>";
 		}
 		$tbody_html = implode("\n", $tbody);
 		$html = <<<ENDE
