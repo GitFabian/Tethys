@@ -16,9 +16,9 @@ use tools\T_Strings;
  */
 class Html {
 
-	private $tag;
+	protected $tag;
 	private $content;
-	private $params;
+	protected $params;
 	/**
 	 * @var Html[]
 	 */
@@ -67,7 +67,7 @@ class Html {
 		if($value===null){
 			unset($this->params[strtolower($key)]);
 		}
-		$this->params[strtolower($key)] = T_Strings::escape_value_html($value);
+		$this->params[strtolower($key)] = $value;
 	}
 
 	public function setId($value){
@@ -91,11 +91,21 @@ class Html {
 }
 
 class Html_standalone extends Html {
-	//TODO
+	public function __construct($tag, array $params = null) {
+		parent::__construct($tag, null, $params);
+	}
+	public function __toString() {
+		$params = T_Html::tag_keyValues($this->params);
+		return "<$this->tag$params />";
+	}
 }
 
 class Html_button extends Html_standalone {
-	//TODO
+	public function __construct($value, $type = "button", array $params = array()) {
+		$params["value"] = $value;
+		$params["type"] = $type;
+		parent::__construct("input", $params);
+	}
 }
 
 class Html_a extends Html {
@@ -131,5 +141,23 @@ class Html_a_button extends Html_a {
 	public function __construct($content, $href, array $params = array()) {
 		parent::__construct($content, $href, $params);
 		$this->addClass("abutton");
+	}
+}
+
+class Html_form_submitButton extends Html {
+	public function __construct($label, array $values, $target = "", $method="post", array $params_form = array(), array $params_button = array()) {
+		$params_form["target"] = $target;
+		$params_form["method"] = $method;
+		parent::__construct("form", "", $params_form);
+
+		//Hidden Fields
+		foreach ($values as $key=>$value){
+			$hidden = new Html_standalone("input", array("type"=>"hidden", "name"=>$key, "value"=>$value));
+			$this->addChild($hidden);
+		}
+
+		$button = new Html_button($label, "submit", $params_button);
+
+		$this->addChild($button);
 	}
 }
