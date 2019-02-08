@@ -27,6 +27,12 @@ class Table {
 	 */
 	private $options = array();
 
+	/**
+	 * @var array
+	 * Global options
+	 */
+	private $options2 = array();
+
 	public function __construct($data = null) {
 		$this->setData($data);
 	}
@@ -40,6 +46,12 @@ class Table {
 		if($edit_link){
 
 			$this->options[] = new Html_a_button("Bearbeiten", ROOT_HTTP_CORE."/core/edit.".EXTENSION."?module=".urlencode($module)."&table=".urlencode($table)."&id=[[ID]]");
+
+		}
+
+		if($new_link){
+
+			$this->options2[] = new Html_a_button("Neu", ROOT_HTTP_CORE."/core/edit.".EXTENSION."?module=".urlencode($module)."&table=".urlencode($table)."&id=NEW");
 
 		}
 
@@ -111,19 +123,30 @@ class Table {
 			}
 			$tbody[] = "<tr>" . implode("", $trow) . "</tr>";
 		}
+
 		$tbody_html = implode("\n", $tbody);
-		$html = <<<ENDE
-<table class="$this->tbl_class">
-	<thead>
-		<tr>
-			$thead_html
-		</tr>
-	</thead>
-	<tbody>
-		$tbody_html
-	</tbody>
-</table>
-ENDE;
+
+		$options2="";
+		if($this->options2){
+			$options2.=implode("",$this->options2);
+		}
+		$options2 = "<div class=\"options2\">$options2</div>";
+
+		$html = "
+			<div class=\"tTable\">
+				<table class=\"$this->tbl_class\">
+					<thead>
+						<tr>
+							$thead_html
+						</tr>
+					</thead>
+					<tbody>
+						$tbody_html
+					</tbody>
+				</table>
+				$options2
+			</div>
+		";
 
 		return $html;
 	}
