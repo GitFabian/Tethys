@@ -148,6 +148,7 @@ class Html_form_submitButton extends Html {
 	public function __construct($label, array $values, $target = "", $method="post", array $params_form = array(), array $params_button = array()) {
 		$params_form["target"] = $target;
 		$params_form["method"] = $method;
+		$params_form["class"] = isset($params_form["class"])?$params_form["class"]." oneButton":"oneButton";
 		parent::__construct("form", "", $params_form);
 
 		//Hidden Fields

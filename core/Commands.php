@@ -20,6 +20,9 @@ class Commands {
 			case "save":
 				self::cmd_save();
 				break;
+			case "delete":
+				self::cmd_delete();
+				break;
 			default:
 				break;
 		}
@@ -62,5 +65,33 @@ class Commands {
 
 		$page->addMessageConfirm("Saved $table #$insert_id.");
 		return true;
+	}
+
+	public static function cmd_delete(){
+		$page = Page::get_global_page();
+
+		$table = request_value("table");
+		$id = request_value("id");
+
+		if(!$table || !$id){
+			Errors::die_hard("Fehler beim Löschen!");
+			return false;
+		}
+
+		$id_escaped = escape_sql($id);
+		$table_escaped = "`".escape_sql($table)."`";
+		$insert_id = Database::delete("-- 
+			DELETE FROM $table_escaped WHERE `id`='$id_escaped'");
+		if($insert_id==1){
+			$page->addMessageConfirm("$table #$id gelöscht.");
+			return true;
+		}
+		if($insert_id==0){
+			$page->addMessageInfo("Löschen: $table #$id nicht gefunden!");
+			return false;
+		}
+
+		$page->addMessageError("Fehler beim Löschen von $table #$id!<br>".Database::get_error_msg());
+		return false;
 	}
 }

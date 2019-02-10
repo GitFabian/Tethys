@@ -20,6 +20,10 @@ form div.buttons{
 	margin-left:205px;
 }
 
+form.oneButton {
+	display: inline-block;
+}
+
 /*========================== Links ======================*/
 
 a.abutton{
