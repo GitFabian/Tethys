@@ -1,7 +1,7 @@
 <?php
 /*GPL
  * This file is part of the Tethys framework;
- * Copyright (C) 2014-2018 Fabian Perder (tethys@qnote.de) and contributors
+ * Copyright (C) 2014-2019 Fabian Perder (tethys@qnote.de) and contributors
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
@@ -13,6 +13,9 @@
  */
 
 namespace core;
+use tools\T_Html;
+use tools\T_Strings;
+
 require_once ROOT_HDD_CORE."/core/Html.php";
 /**
  *
@@ -96,7 +99,7 @@ abstract class Formfield {
 	/**
 	 * @var array All params except "name", "value" and "id".
 	 */
-	public $more_params = array();
+	public $more_params;
 
 	//Label:
 	protected $title;
@@ -116,14 +119,18 @@ abstract class Formfield {
 	 * @param bool        $val_from_request
 	 *                    If set to true, the default value ($value) can be overwritten by the request.
 	 *                    Example: .../myform.php?myvalue=Foo
+	 * @param array       $more_params
+	 *                    All params except "name", "value" and "id".
 	 */
-	function __construct($name, $title = null, $value = null, $val_from_request = true) {
+	function __construct($name, $title = null, $value = null, $val_from_request = true, $more_params = array()) {
 		$this->name = $name;
 
 		//Title: If set to null, the fieldname is used as label.
 		$this->title = ($title === null ? $name : $title);
 
 		$this->value = $val_from_request ? request_value($name, $value) : $value;
+
+		$this->more_params = $more_params;
 	}
 
 	/**
@@ -146,7 +153,7 @@ abstract class Formfield {
 		//Developers see the fieldname
 		if (USER_DEV) $tooltip .= " [" . $this->name . "]";
 
-		$title = $tooltip ? "title='" . escape_value_html($tooltip) . "'" : "";
+		$title = $tooltip ? "title='" . T_Strings::escape_value_html($tooltip) . "'" : "";
 
 		return "<div" . $this->getParams_outer() . ">"
 			. "<label $title>$label</label>"
@@ -173,7 +180,7 @@ abstract class Formfield {
 			$params["id"] = $this->id;
 		}
 
-		return html_tag_keyValues($params);
+		return T_Html::tag_keyValues($params);
 	}
 
 	/**
@@ -185,7 +192,7 @@ abstract class Formfield {
 		if ($this->outer_id) $params["id"] = $this->outer_id;
 		$params["class"] = "form_field" . ($this->outer_class ? " " . $this->outer_class : "");
 
-		return html_tag_keyValues($params);
+		return T_Html::tag_keyValues($params);
 	}
 
 }
@@ -232,6 +239,22 @@ class Formfield_textarea extends Formfield {
 
 	public function inner_html() {
 		return "<textarea" . $this->getParams_inner(false) . ">".htmlentities($this->value)."</textarea>";
+	}
+
+}
+
+/**
+ * Class Formfield_info
+ * A possibility to add HTML to a Form.
+ */
+class Formfield_info extends Formfield {
+
+	public function __construct($value, $name = "", $title = null) {
+		parent::__construct($name, $title, $value);
+	}
+
+	public function inner_html() {
+		return $this->value;
 	}
 
 }

@@ -7,6 +7,10 @@
  GPL*/
 
 namespace core;
+use tools\T_Arrays;
+
+require_once ROOT_HDD_CORE."/tools/T_Arrays.php";
+
 /**
  * Class Page
  * Read about this concept: http://gitfabian.github.io/Tethys/pages.html
@@ -30,6 +34,11 @@ class Page {
 	/** @var Page */
 	static private $global_page = null;
 
+	private $stylesheets = array();
+
+	private $javascripts = array();
+	public $inline_js = "";
+
 	/**
 	 * Page constructor.
 	 * There can be only one page, stored in the static $global_page. To change the current page use Page::reset.
@@ -39,6 +48,14 @@ class Page {
 	 */
 	private function __construct($id, $title) {
 		$this->reset($id, $title);
+	}
+
+	public function add_stylesheet($url, $media = null) {
+		$this->stylesheets[$url] = $media;
+	}
+
+	public function add_javascript($url) {
+		$this->javascripts[$url] = true;
 	}
 
 	public function get_id() {
@@ -157,10 +174,24 @@ class Page {
 		/*
 		 * CSS
 		 */
-		$css_links = array(SKIN_HTTP . '/screen.css' => "all");
+		$css_links = T_Arrays::merge_assoc_greedy(array(SKIN_HTTP . '/screen.css' => null), $this->stylesheets);
 		$css_html = "";
 		foreach ($css_links as $url => $media) {
+			if($media===null){
+				$media="all";
+			}
 			$css_html .= "<link href=\"$url\" rel=\"stylesheet\" type=\"text/css\" media=\"$media\"/>\n";
+		}
+
+		/*
+		 * JS
+		 */
+		$js_html = "";
+		foreach ($this->javascripts as $url => $dummy) {
+			$js_html .= "<script type=\"text/javascript\" src=\"$url\"></script>\n";
+		}
+		if ($this->inline_js){
+			$js_html.="<script>$this->inline_js</script>\n";
 		}
 
 		// @formatter:off
@@ -170,6 +201,7 @@ class Page {
 					."<meta charset=\"UTF-8\">\n"
 					."<title>$title</title>\n"
 					.$css_html
+					.$js_html
 				."</head>\n"
 				."<body id='$this->id'><div class='body_outer'>\n"
 					.$messages

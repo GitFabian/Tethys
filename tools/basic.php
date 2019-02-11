@@ -73,7 +73,7 @@ function str_replace_byArray($substitutions, $string) {
 }
 
 /**
- * @deprecated
+ * @deprecated Use <code>\tools\T_Html::tag_keyValues</code> instead.
  */
 function html_tag_keyValues($params) {
 	return \tools\T_Html::tag_keyValues($params);
