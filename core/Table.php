@@ -55,7 +55,7 @@ class Table {
 		if($edit_link){
 
 			if($edit_link===true){
-				$edit_link = ROOT_HTTP_CORE."/core/edit.".EXTENSION."?module=".urlencode($module)."&table=".urlencode($table)."&id=[[ID]]";
+				$edit_link = ROOT_HTTP_CORE."/core/edit.".EXTENSION."?tmodule=".urlencode($module)."&ttable=".urlencode($table)."&id=[[ID]]";
 			}
 
 			$this->options["edit"] = new Html_a_button("Bearbeiten", $edit_link);
@@ -77,7 +77,7 @@ class Table {
 		if($new_link){
 
 			if($new_link===true){
-				$new_link = ROOT_HTTP_CORE."/core/edit.".EXTENSION."?module=".urlencode($module)."&table=".urlencode($table)."&id=NEW";
+				$new_link = ROOT_HTTP_CORE."/core/edit.".EXTENSION."?tmodule=".urlencode($module)."&ttable=".urlencode($table)."&id=NEW";
 			}
 
 			$this->options2["new"] = new Html_a_button("Neu", $new_link);

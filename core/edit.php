@@ -13,8 +13,8 @@ $page = Start::init("core_edit", "Edit");
 if(request_cmd("save")){ $page->send_and_quit(); }
 include_once(ROOT_HDD_CORE.'/core/Form.php');
 
-$module = request_value("module");
-$table = request_value("table");
+$module = request_value("tmodule");
+$table = request_value("ttable");
 $id = request_value("id");
 $return_url = request_value("return", null);
 

@@ -115,6 +115,30 @@ class Html_a extends Html {
 	}
 }
 
+class Html_h1 extends Html {
+	public function __construct($content, array $params = array()) {
+		parent::__construct("h1", $content, $params);
+	}
+}
+
+class Html_h2 extends Html {
+	public function __construct($content, array $params = array()) {
+		parent::__construct("h2", $content, $params);
+	}
+}
+
+class Html_h3 extends Html {
+	public function __construct($content, array $params = array()) {
+		parent::__construct("h3", $content, $params);
+	}
+}
+
+class Html_h4 extends Html {
+	public function __construct($content, array $params = array()) {
+		parent::__construct("h4", $content, $params);
+	}
+}
+
 class Html_div extends Html {
 	public function __construct($content, $class=null, $id=null, array $params = null) {
 		parent::__construct("div", $content, $params);

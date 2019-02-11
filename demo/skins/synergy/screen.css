@@ -32,3 +32,18 @@ a.abutton{
 	padding:0 3px;
 	text-decoration: none;
 }
+
+/*========================== Messages ======================*/
+
+div.messages div.message.msg_confirm{
+	color:green;
+}
+
+div.messages div.message.msg_info{
+	color:blue;
+}
+
+div.messages div.message.msg_error{
+	color:red;
+}
+

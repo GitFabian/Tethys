@@ -91,6 +91,7 @@ class Config {
 		}
 
 		define("EXTENSION", self::$core_config["core"][0]["EXTENSION"]);
+		define("EXT", EXTENSION);
 
 		//SKIN_HTTP:
 		$skinname = self::$core_config["core"][0]["SKIN"];

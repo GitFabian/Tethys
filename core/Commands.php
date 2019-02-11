@@ -86,7 +86,7 @@ class Commands {
 			$page->addMessageConfirm("$table #$id gelöscht.");
 			return true;
 		}
-		if($insert_id==0){
+		if($insert_id===0){
 			$page->addMessageInfo("Löschen: $table #$id nicht gefunden!");
 			return false;
 		}
