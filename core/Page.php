@@ -1,7 +1,7 @@
 <?php
 /*GPL
  * This file is part of the Tethys framework;
- * Copyright (C) 2014-2018 Fabian Perder (tethys@qnote.de) and contributors
+ * Copyright (C) 2014-2019 Fabian Perder (tethys@qnote.de) and contributors
  * Tethys comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under
  * certain conditions. See the GNU General Public License (file 'LICENSE' in the root directory) for more details.
  GPL*/
@@ -96,6 +96,7 @@ class Page {
 
 	/**
 	 * @deprecated Use "add" instead.
+	 * @param string $html
 	 */
 	public function addHtml($html) {
 		$this->inner_body .= $html;
@@ -186,12 +187,13 @@ class Page {
 		/*
 		 * JS
 		 */
+		$js_links = T_Arrays::merge_assoc_greedy(array(ROOT_HTTP_CORE."/tools/tethys.js"=>true),$this->javascripts);
 		$js_html = "";
-		foreach ($this->javascripts as $url => $dummy) {
+		foreach ($js_links as $url => $dummy) {
 			$js_html .= "<script type=\"text/javascript\" src=\"$url\"></script>\n";
 		}
 		if ($this->inline_js){
-			$js_html.="<script>$this->inline_js</script>\n";
+			$js_html.= /** @lang text */"<script>$this->inline_js</script>\n";
 		}
 
 		// @formatter:off
