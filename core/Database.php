@@ -87,6 +87,10 @@ class Database {
 
 			//Is no main database set?
 			if (self::$main == null) {
+				if($e instanceof \PDOException && $e->getMessage()=="could not find driver"){
+					echo "PDO-Treiber nicht gefunden!";
+					exit;
+				}
 				if ($this->error_code == 1049/*Unknown database*/) {
 					include_once ROOT_HDD_CORE . '/inst/core/Install.php';
 					$page = Install::initialize_install("installer_dbinit");

@@ -11,13 +11,21 @@
 <h2>Alias</h2>
 <p class="code">Alias ROOT_HTTP_MODULES/ "ROOT_HDD_MODULES/"<br>
 &lt;Directory "ROOT_HDD_MODULES"><br>
-	&nbsp;&nbsp;&nbsp;&nbsp;Allow from all<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;#Allow from all<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;Require all granted<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride All<br>
 &lt;/Directory><br>
 <br>
+# https://httpd.apache.org/docs/2.4/upgrading.html
+#	2.2 configuration:
+#		Order allow,deny
+#		Allow from all
+#	2.4 configuration:
+#		Require all granted
 Alias ROOT_HTTP_CORE/ "ROOT_HDD_CORE/"<br>
 &lt;Directory "ROOT_HDD_CORE"><br>
-	&nbsp;&nbsp;&nbsp;&nbsp;Allow from all<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;#Allow from all<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;Require all granted<br>
 	&nbsp;&nbsp;&nbsp;&nbsp;AllowOverride All<br>
 &lt;/Directory></p>
 
