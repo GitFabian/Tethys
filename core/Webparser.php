@@ -22,7 +22,7 @@ class Webparser {
 	 * @return string|false
 	 */
 	public static function webtransmission_simple($url, $check_status = false){
-		if(($code=self::get_http_response_code($url)) != "200"){
+		if($check_status && (($code=self::get_http_response_code($url)) != "200")){
 			require_once ROOT_HDD_CORE."/core/Webparser_Error.php";
 			$error = new Webparser_Error();
 			$error->statuscode = $code;
